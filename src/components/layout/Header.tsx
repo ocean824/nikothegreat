@@ -25,7 +25,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="font-pixel text-primary text-lg tracking-wider neon-glow-sm">
-            NIKO
+            NIKO THE GREAT
           </Link>
 
           {/* Navigation */}
