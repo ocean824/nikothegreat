@@ -22,8 +22,11 @@ export const WelcomePopup = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Only show on homepage
+    if (location.pathname !== "/") return;
+    
     const hasSeenPopup = localStorage.getItem("niko-welcome-popup-seen");
-    if (!hasSeenPopup && location.pathname === "/") {
+    if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setOpen(true);
       }, 1500);
