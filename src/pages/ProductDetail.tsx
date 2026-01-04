@@ -21,7 +21,9 @@ const audioPreviewMap: Record<string, string> = {
   "stained-glass-vol-1": "/audio/stained-glass-vol-1.mp3",
   "stained-glass-vol-2": "/audio/stained-glass-vol-2.mp3",
   "unrequited-love-vol-1": "/audio/unrequited-love-vol-1.mp3",
+  "unrequited-love-vol-2": "/audio/unrequited-love-vol-1.mp3",
   "vibrant-darkness-vol-1": "/audio/vibrant-darkness-vol-1.mp3",
+  "vintage-vibes-vol-1": "/audio/vintage-vibes-vol-1.mp3",
 };
 
 // Predefined bundle groups - each product shows its bundle partners
