@@ -96,7 +96,7 @@ const Credits = () => {
             Music produced, co-produced, or featuring Niko The Great
           </p>
           <a
-            href="https://music.apple.com/library/playlist/p.mmRl3ZAfvVYGqq"
+            href="https://music.apple.com/us/playlist/prod-by-niko-the-great/pl.u-KVXBDR1FdvNq88"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-primary neon-glow-sm hover:underline"
