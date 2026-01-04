@@ -335,7 +335,10 @@ const ProductDetail = () => {
                   variant="outline"
                   size="icon"
                   className="h-10 w-10 rounded-full flex-shrink-0"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleAudio();
+                  }}
                 >
                   {isPlaying && playingHandle === handle ? (
                     <Pause className="h-4 w-4" />
