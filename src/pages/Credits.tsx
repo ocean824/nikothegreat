@@ -123,6 +123,10 @@ const Credits = () => {
                 </div>
               ))}
             </div>
+            
+            <div className="p-4 border-t border-border bg-muted/50 text-center">
+              <span className="text-primary neon-glow-sm font-semibold">{credits.length} Total Placements</span>
+            </div>
           </div>
         </div>
       </section>
