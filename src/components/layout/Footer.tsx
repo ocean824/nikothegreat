@@ -37,7 +37,7 @@ export const Footer = () => {
             />
             <Input
               type="tel"
-              placeholder="Phone number (optional)"
+              placeholder="Phone number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
