@@ -480,7 +480,12 @@ const ProductDetail = () => {
                                   key={variant.node.id}
                                   variant={selectedBundleVariantId === variant.node.id ? "default" : "outline"}
                                   size="sm"
-                                  onClick={() => setBundleVariants(prev => ({ ...prev, [p.node.id]: variant.node.id }))}
+                                  onClick={() => {
+                                    setBundleVariants(prev => ({ ...prev, [p.node.id]: variant.node.id }));
+                                    if (!bundleItems.has(p.node.id)) {
+                                      setBundleItems(prev => new Set([...prev, p.node.id]));
+                                    }
+                                  }}
                                   className="h-7 text-xs px-2"
                                 >
                                   {variant.node.title}
