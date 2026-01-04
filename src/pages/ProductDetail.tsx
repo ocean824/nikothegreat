@@ -296,9 +296,9 @@ const ProductDetail = () => {
           Back to store
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           {/* Product Image */}
-          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border lg:sticky lg:top-4">
+          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border max-w-[500px] mx-auto lg:mx-0">
             {imageUrl ? (
               <img
                 src={imageUrl}
