@@ -1,13 +1,57 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from "react";
+import { Layout } from "@/components/layout/Layout";
+import { ProductGrid } from "@/components/products/ProductGrid";
+import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
+import heroBanner from "@/assets/hero-banner.png";
 
 const Index = () => {
+  const [products, setProducts] = useState<ShopifyProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const data = await fetchProducts(50);
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to load products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative">
+        <img
+          src={heroBanner}
+          alt="Niko The Great - Producer & Sound Designer"
+          className="w-full h-auto object-cover"
+        />
+      </section>
+
+      {/* Products Section */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Premium <span className="text-primary">Sample Packs</span> &{" "}
+            <span className="text-primary">Drum Kits</span>
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Hand-crafted sounds for producers who want to stand out
+          </p>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-foreground mb-6">All Products</h2>
+          <ProductGrid products={products} isLoading={isLoading} />
+        </div>
+      </section>
+    </Layout>
   );
 };
 
