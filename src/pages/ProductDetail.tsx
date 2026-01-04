@@ -304,6 +304,7 @@ const ProductDetail = () => {
 
   const imageUrl = product.images?.edges?.[0]?.node?.url;
   const price = parseFloat(selectedVariant?.price?.amount || "0").toFixed(2);
+  const originalPrice = (parseFloat(selectedVariant?.price?.amount || "0") + 5).toFixed(2);
 
   return (
     <Layout>
@@ -341,7 +342,10 @@ const ProductDetail = () => {
               <h1 className="text-2xl font-bold text-foreground mb-2">
                 {product.title}
               </h1>
-              <p className="text-2xl font-bold text-primary neon-glow-sm">${price}</p>
+              <div className="flex items-center gap-3">
+                <p className="text-2xl font-bold text-primary neon-glow-sm">${price}</p>
+                <p className="text-lg text-muted-foreground line-through">${originalPrice}</p>
+              </div>
             </div>
 
             {/* Audio Preview */}

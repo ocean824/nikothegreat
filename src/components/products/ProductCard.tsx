@@ -9,6 +9,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const { node } = product;
   const imageUrl = node.images?.edges?.[0]?.node?.url;
   const price = parseFloat(node.priceRange.minVariantPrice.amount).toFixed(2);
+  const originalPrice = (parseFloat(node.priceRange.minVariantPrice.amount) + 5).toFixed(2);
   const productType = node.productType || "Sample Kit";
 
   return (
@@ -37,9 +38,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <h3 className="font-semibold text-foreground mb-2 truncate">
           {node.title}
         </h3>
-        <p className="text-lg font-bold text-primary neon-glow-sm">
-          ${price}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-lg font-bold text-primary neon-glow-sm">
+            ${price}
+          </p>
+          <p className="text-sm text-muted-foreground line-through">
+            ${originalPrice}
+          </p>
+        </div>
       </div>
     </Link>
   );
