@@ -3,6 +3,7 @@ import { PromoMarquee } from "./PromoMarquee";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { WelcomePopup } from "@/components/WelcomePopup";
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ export const Layout = ({ children, showMarquee = true }: LayoutProps) => {
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
+      <WelcomePopup />
     </div>
   );
 };
