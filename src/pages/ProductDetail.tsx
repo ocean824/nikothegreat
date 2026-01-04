@@ -268,9 +268,9 @@ const ProductDetail = () => {
           Back to store
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           {/* Product Image */}
-          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border max-h-[500px]">
+          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border lg:sticky lg:top-4">
             {imageUrl ? (
               <img
                 src={imageUrl}
@@ -365,7 +365,7 @@ const ProductDetail = () => {
             {relatedProducts.length > 0 && (
               <div className="pt-4 border-t border-border">
                 <h3 className="text-sm font-semibold text-foreground mb-3">
-                  Trending Packs...
+                  Create Your Own Bundle
                 </h3>
                 
                 <div className="flex items-center gap-1.5 mb-3 flex-wrap">
@@ -421,7 +421,7 @@ const ProductDetail = () => {
 
                 <div className="space-y-2">
                   {/* Current Product */}
-                  <div className="flex items-center gap-2 p-2 bg-card rounded border border-border">
+                  <div className="flex items-center gap-3 p-2 bg-card rounded border border-border">
                     <Checkbox
                       id={`bundle-${product.id}`}
                       checked={bundleItems.has(product.id)}
@@ -429,10 +429,15 @@ const ProductDetail = () => {
                       disabled
                       className="h-4 w-4"
                     />
+                    <div className="w-12 h-12 rounded overflow-hidden border border-border flex-shrink-0">
+                      {imageUrl && (
+                        <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
+                      )}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs truncate">
-                          <span className="text-muted-foreground">This: </span>
+                        <span className="text-xs">
+                          <span className="text-muted-foreground">This item: </span>
                           <span className="text-primary font-medium">{product.title}</span>
                         </span>
                         <span className="font-semibold text-xs flex-shrink-0">${price}</span>
@@ -461,18 +466,24 @@ const ProductDetail = () => {
                     const selectedBundleVariant = p.node.variants?.edges?.find(v => v.node.id === selectedBundleVariantId)?.node;
                     const relatedPrice = parseFloat(selectedBundleVariant?.price?.amount || p.node.priceRange?.minVariantPrice?.amount || "0").toFixed(2);
                     const hasVariants = p.node.variants?.edges && p.node.variants.edges.length > 1;
+                    const relatedImageUrl = p.node.images?.edges?.[0]?.node?.url;
                     
                     return (
-                      <div key={p.node.id} className="flex items-center gap-2 p-2 bg-card rounded border border-border">
+                      <div key={p.node.id} className="flex items-center gap-3 p-2 bg-card rounded border border-border">
                         <Checkbox
                           id={`bundle-${p.node.id}`}
                           checked={bundleItems.has(p.node.id)}
                           onCheckedChange={() => toggleBundleItem(p.node.id)}
                           className="h-4 w-4"
                         />
+                        <div className="w-12 h-12 rounded overflow-hidden border border-border flex-shrink-0">
+                          {relatedImageUrl && (
+                            <img src={relatedImageUrl} alt={p.node.title} className="w-full h-full object-cover" />
+                          )}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="text-muted-foreground text-xs truncate">{p.node.title}</span>
+                            <span className="text-muted-foreground text-xs">{p.node.title}</span>
                             <span className="font-semibold text-xs flex-shrink-0">${relatedPrice}</span>
                           </div>
                           {hasVariants && (
