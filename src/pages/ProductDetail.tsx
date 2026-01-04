@@ -8,6 +8,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, ShoppingCart, Plus, Play, Pause } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { AudioWaveform } from "@/components/AudioWaveform";
 
 // Audio preview mapping by product handle
 const audioPreviewMap: Record<string, string> = {
@@ -332,7 +333,7 @@ const ProductDetail = () => {
                     variant="outline"
                     size="icon"
                     onClick={() => toggleAudio()}
-                    className="h-10 w-10 rounded-full"
+                    className="h-10 w-10 rounded-full flex-shrink-0"
                   >
                     {isPlaying && playingHandle === handle ? (
                       <Pause className="h-4 w-4" />
@@ -340,9 +341,13 @@ const ProductDetail = () => {
                       <Play className="h-4 w-4 ml-0.5" />
                     )}
                   </Button>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">Preview</p>
-                    <p className="text-xs text-muted-foreground">Listen before you buy</p>
+                    <AudioWaveform 
+                      audioRef={audioRef} 
+                      isPlaying={isPlaying && playingHandle === handle}
+                      className="mt-1"
+                    />
                   </div>
                 </div>
               </div>
