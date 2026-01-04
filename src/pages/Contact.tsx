@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Instagram, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { toast } from "sonner";
 
 const Contact = () => {
@@ -40,28 +40,6 @@ const Contact = () => {
             Got questions? Reach out and let's connect.
           </p>
 
-          <div className="flex justify-center gap-4 mb-12">
-            <a
-              href="https://www.instagram.com/1.nikothegreat/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Instagram className="h-5 w-5" />
-              Instagram
-            </a>
-            <a
-              href="https://x.com/1NikoTheGreat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-              X (Twitter)
-            </a>
-          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
