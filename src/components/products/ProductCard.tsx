@@ -39,6 +39,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           {node.title}
         </h3>
         <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-red-500 uppercase">Sale</span>
           <p className="text-lg font-bold text-primary neon-glow-sm">
             ${price}
           </p>
