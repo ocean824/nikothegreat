@@ -1,155 +1,127 @@
 import { useEffect, useRef, useState } from "react";
 
 interface AudioWaveformProps {
-  audioRef: React.RefObject<HTMLAudioElement | null>;
+  audioSrc: string;
   isPlaying: boolean;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   className?: string;
 }
 
-export const AudioWaveform = ({ audioRef, isPlaying, className = "" }: AudioWaveformProps) => {
+export const AudioWaveform = ({ audioSrc, isPlaying, audioRef, className = "" }: AudioWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [waveformData, setWaveformData] = useState<number[]>([]);
+  const [progress, setProgress] = useState(0);
   const animationRef = useRef<number | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
 
+  // Analyze audio file and extract waveform data
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !isPlaying) {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
-      // Draw idle waveform
-      drawIdleWaveform();
-      return;
-    }
-
-    // Create or reuse audio context
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-    }
-
-    const audioContext = audioContextRef.current;
-
-    // Only create source once per audio element
-    if (!isConnected) {
+    const analyzeAudio = async () => {
       try {
-        analyserRef.current = audioContext.createAnalyser();
-        analyserRef.current.fftSize = 256;
+        const response = await fetch(audioSrc);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
         
-        sourceRef.current = audioContext.createMediaElementSource(audio);
-        sourceRef.current.connect(analyserRef.current);
-        analyserRef.current.connect(audioContext.destination);
-        setIsConnected(true);
-      } catch (e) {
-        // Source might already be connected
-        console.log("Audio already connected");
+        // Get the audio data from the first channel
+        const rawData = audioBuffer.getChannelData(0);
+        const samples = 60; // Number of bars to display
+        const blockSize = Math.floor(rawData.length / samples);
+        const filteredData: number[] = [];
+
+        for (let i = 0; i < samples; i++) {
+          let sum = 0;
+          for (let j = 0; j < blockSize; j++) {
+            sum += Math.abs(rawData[i * blockSize + j]);
+          }
+          filteredData.push(sum / blockSize);
+        }
+
+        // Normalize the data
+        const maxVal = Math.max(...filteredData);
+        const normalized = filteredData.map(val => val / maxVal);
+        setWaveformData(normalized);
+        
+        audioContext.close();
+      } catch (error) {
+        console.error("Error analyzing audio:", error);
       }
-    }
-
-    if (audioContext.state === "suspended") {
-      audioContext.resume();
-    }
-
-    const analyser = analyserRef.current;
-    if (!analyser) return;
-
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const draw = () => {
-      if (!canvasRef.current || !analyser) return;
-
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      analyser.getByteFrequencyData(dataArray);
-
-      const width = canvas.width;
-      const height = canvas.height;
-
-      ctx.clearRect(0, 0, width, height);
-
-      const barCount = 40;
-      const barWidth = width / barCount - 2;
-      const gap = 2;
-
-      for (let i = 0; i < barCount; i++) {
-        const dataIndex = Math.floor((i / barCount) * bufferLength);
-        const value = dataArray[dataIndex];
-        const barHeight = Math.max(4, (value / 255) * height * 0.9);
-
-        const x = i * (barWidth + gap);
-        const y = (height - barHeight) / 2;
-
-        // Gradient from primary color
-        const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
-        gradient.addColorStop(0, "hsl(142, 76%, 45%)");
-        gradient.addColorStop(0.5, "hsl(142, 76%, 36%)");
-        gradient.addColorStop(1, "hsl(142, 76%, 45%)");
-
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.roundRect(x, y, barWidth, barHeight, 2);
-        ctx.fill();
-      }
-
-      animationRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    if (audioSrc) {
+      analyzeAudio();
+    }
+  }, [audioSrc]);
+
+  // Track playback progress
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateProgress = () => {
+      if (audio.duration) {
+        setProgress(audio.currentTime / audio.duration);
+      }
+      if (isPlaying) {
+        animationRef.current = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    if (isPlaying) {
+      updateProgress();
+    } else {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [audioRef, isPlaying, isConnected]);
+  }, [isPlaying, audioRef]);
 
-  const drawIdleWaveform = () => {
-    if (!canvasRef.current) return;
-    
+  // Draw the waveform
+  useEffect(() => {
+    if (!canvasRef.current || waveformData.length === 0) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const width = canvas.width;
     const height = canvas.height;
+    const barCount = waveformData.length;
+    const barWidth = (width / barCount) - 1.5;
+    const gap = 1.5;
 
     ctx.clearRect(0, 0, width, height);
 
-    const barCount = 40;
-    const barWidth = width / barCount - 2;
-    const gap = 2;
-
-    for (let i = 0; i < barCount; i++) {
-      // Create a subtle wave pattern for idle state
-      const barHeight = 4 + Math.sin(i * 0.3) * 2;
-
+    waveformData.forEach((value, i) => {
+      const barHeight = Math.max(4, value * height * 0.85);
       const x = i * (barWidth + gap);
       const y = (height - barHeight) / 2;
 
-      ctx.fillStyle = "hsl(142, 40%, 30%)";
-      ctx.beginPath();
-      ctx.roundRect(x, y, barWidth, barHeight, 2);
-      ctx.fill();
-    }
-  };
+      // Calculate if this bar is before or after the playhead
+      const barProgress = i / barCount;
+      const isPast = barProgress <= progress;
 
-  // Draw idle waveform on mount
-  useEffect(() => {
-    drawIdleWaveform();
-  }, []);
+      ctx.fillStyle = isPast 
+        ? "hsl(142, 76%, 42%)" // Primary green for played portion
+        : "hsl(142, 30%, 25%)"; // Muted green for unplayed
+
+      ctx.beginPath();
+      ctx.roundRect(x, y, barWidth, barHeight, 1.5);
+      ctx.fill();
+    });
+  }, [waveformData, progress]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={200}
-      height={40}
-      className={`${className}`}
+      width={240}
+      height={36}
+      className={className}
     />
   );
 };

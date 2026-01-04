@@ -344,6 +344,7 @@ const ProductDetail = () => {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">Preview</p>
                     <AudioWaveform 
+                      audioSrc={audioSrc}
                       audioRef={audioRef} 
                       isPlaying={isPlaying && playingHandle === handle}
                       className="mt-1"
