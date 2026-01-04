@@ -52,9 +52,15 @@ const ProductDetail = () => {
 
         // Fetch related products for bundle upsell
         const allProducts = await fetchProducts(12);
-        const related = allProducts.filter(
+        // Prefer same product type, but fallback to any products if none match
+        let related = allProducts.filter(
           (p) => p.node.handle !== handle && p.node.productType === data?.productType
         ).slice(0, 3);
+        
+        // If no products of same type, show other products
+        if (related.length === 0) {
+          related = allProducts.filter((p) => p.node.handle !== handle).slice(0, 3);
+        }
         setRelatedProducts(related);
         
         // Pre-select current product in bundle and set default variants
