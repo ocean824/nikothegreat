@@ -16,6 +16,7 @@ export const WelcomePopup = () => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [showCodes, setShowCodes] = useState(false);
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem("niko-welcome-popup-seen");
@@ -29,12 +30,14 @@ export const WelcomePopup = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email || phone) {
+    if (email && phone) {
       localStorage.setItem("niko-welcome-popup-seen", "true");
+      setShowCodes(true);
       toast.success("Welcome to the family! 🎉", {
-        description: "Check your inbox for exclusive drops and discounts.",
+        description: "Your exclusive discount codes are below!",
       });
-      setOpen(false);
+    } else {
+      toast.error("Please enter both email and phone number");
     }
   };
 
@@ -70,39 +73,57 @@ export const WelcomePopup = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
-            <Label htmlFor="popup-email">Email</Label>
-            <Input
-              id="popup-email"
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-background"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="popup-phone">Phone</Label>
-            <Input
-              id="popup-phone"
-              type="tel"
-              placeholder="+1 (555) 000-0000"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="bg-background"
-            />
-          </div>
+        {!showCodes ? (
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="popup-email">Email</Label>
+              <Input
+                id="popup-email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-background"
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="popup-phone">Phone</Label>
+              <Input
+                id="popup-phone"
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="bg-background"
+                required
+              />
+            </div>
 
-          <Button type="submit" className="w-full neon-glow-sm" size="lg">
-            Unlock My Discount
-          </Button>
+            <Button type="submit" className="w-full neon-glow-sm" size="lg">
+              Unlock My Discount
+            </Button>
 
-          <p className="text-xs text-center text-muted-foreground">
-            By subscribing, you agree to receive marketing messages. Unsubscribe anytime.
-          </p>
-        </form>
+            <p className="text-xs text-center text-muted-foreground">
+              By subscribing, you agree to receive marketing messages. Unsubscribe anytime.
+            </p>
+          </form>
+        ) : (
+          <div className="space-y-4 mt-4">
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 text-center">
+              <p className="text-sm text-muted-foreground mb-2">25% OFF 3+ Kits:</p>
+              <p className="text-xl font-bold text-primary tracking-wider">NEWYEAR25</p>
+            </div>
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 text-center">
+              <p className="text-sm text-muted-foreground mb-2">50% OFF 5+ Kits:</p>
+              <p className="text-xl font-bold text-primary tracking-wider">NEWYEAR50</p>
+            </div>
+            <Button onClick={handleClose} className="w-full neon-glow-sm" size="lg">
+              Start Shopping
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
