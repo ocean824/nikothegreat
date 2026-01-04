@@ -15,17 +15,16 @@ import { useCartStore } from "@/stores/cartStore";
 export const AbandonedCartPopup = () => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const items = useCartStore((state) => state.items);
   const setCartOpen = useCartStore((state) => state.setOpen);
 
   useEffect(() => {
-    // Only trigger if there are items in cart
     if (items.length === 0) return;
 
     const hasSeenAbandonPopup = sessionStorage.getItem("niko-abandon-popup-seen");
     if (hasSeenAbandonPopup) return;
 
-    // Show popup after 60 seconds of inactivity with items in cart
     let timeout: NodeJS.Timeout;
     
     const resetTimer = () => {
@@ -33,10 +32,9 @@ export const AbandonedCartPopup = () => {
       timeout = setTimeout(() => {
         setOpen(true);
         sessionStorage.setItem("niko-abandon-popup-seen", "true");
-      }, 60000); // 60 seconds
+      }, 60000);
     };
 
-    // Track user activity
     const events = ["mousedown", "mousemove", "keypress", "scroll", "touchstart"];
     events.forEach((event) => {
       document.addEventListener(event, resetTimer, { passive: true });
@@ -54,7 +52,7 @@ export const AbandonedCartPopup = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (email || phone) {
       toast.success("We'll remind you about your cart!", {
         description: "Check your inbox for a special discount.",
       });
@@ -109,11 +107,17 @@ export const AbandonedCartPopup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-background"
-              required
+            />
+            <Input
+              type="tel"
+              placeholder="Phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="bg-background"
             />
             <Button type="submit" variant="outline" className="w-full">
               <Gift className="h-4 w-4 mr-2" />
-              Email Me a Reminder + Discount
+              Send Me a Reminder + Discount
             </Button>
           </form>
         </div>

@@ -18,10 +18,8 @@ export const WelcomePopup = () => {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
-    // Check if user has already seen the popup
     const hasSeenPopup = localStorage.getItem("niko-welcome-popup-seen");
     if (!hasSeenPopup) {
-      // Show popup after a short delay
       const timer = setTimeout(() => {
         setOpen(true);
       }, 1500);
@@ -86,7 +84,7 @@ export const WelcomePopup = () => {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="popup-phone">Phone (optional)</Label>
+            <Label htmlFor="popup-phone">Phone</Label>
             <Input
               id="popup-phone"
               type="tel"
