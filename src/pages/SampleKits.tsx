@@ -11,7 +11,7 @@ const SampleKits = () => {
     const loadProducts = async () => {
       try {
         // Filter by product type "Sample Kit" or fetch all and filter client-side
-        const data = await fetchProducts(50, "product_type:Sample Kit OR product_type:MIDI Kit");
+        const data = await fetchProducts(50, "product_type:Sample Kit");
         setProducts(data);
       } catch (error) {
         console.error("Failed to load products:", error);
