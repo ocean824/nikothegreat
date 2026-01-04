@@ -1,9 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import { ExternalLink, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { toast } from "sonner";
+import { ExternalLink } from "lucide-react";
 
 const credits = [
   { song: "i'll never forgive you", artist: "Angelo Mota", album: "i changed my mind" },
@@ -89,45 +85,9 @@ const credits = [
 ];
 
 const Credits = () => {
-  const [email, setEmail] = useState("");
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      toast.success("Thanks for subscribing!", {
-        description: "You'll receive updates at " + email,
-      });
-      setEmail("");
-    }
-  };
-
   return (
     <Layout showMarquee={false}>
       <section className="container mx-auto px-4 py-12">
-        {/* Email Subscribe Widget */}
-        <div className="max-w-xl mx-auto mb-12 p-6 bg-card rounded-lg border border-border">
-          <div className="flex items-center gap-3 mb-4">
-            <Mail className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold text-foreground">Stay Updated</h3>
-          </div>
-          <p className="text-muted-foreground text-sm mb-4">
-            Get notified about new releases, sample packs, and exclusive content.
-          </p>
-          <form onSubmit={handleSubscribe} className="flex gap-2">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1"
-              required
-            />
-            <Button type="submit" className="neon-glow-sm">
-              Subscribe
-            </Button>
-          </form>
-        </div>
-
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
             Production Credits

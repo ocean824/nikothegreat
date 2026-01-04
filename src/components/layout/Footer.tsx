@@ -1,10 +1,47 @@
+import { useState } from "react";
 import { Instagram, Mail, Youtube } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast.success("Thanks for subscribing!", {
+        description: "You'll receive updates at " + email,
+      });
+      setEmail("");
+    }
+  };
+
   return (
     <footer className="border-t border-border bg-background mt-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="container mx-auto px-4 py-12">
+        {/* Newsletter Section */}
+        <div className="max-w-md mx-auto text-center mb-10">
+          <h3 className="font-semibold text-foreground mb-2">Stay Updated</h3>
+          <p className="text-muted-foreground text-sm mb-4">
+            Get notified about new releases, sample packs, and exclusive content.
+          </p>
+          <form onSubmit={handleSubscribe} className="flex gap-2">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1"
+              required
+            />
+            <Button type="submit" className="neon-glow-sm">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
           {/* Logo */}
           <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow-sm">
             NIKO THE GREAT
