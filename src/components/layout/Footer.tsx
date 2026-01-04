@@ -6,14 +6,16 @@ import { toast } from "sonner";
 
 export const Footer = () => {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (email || phone) {
       toast.success("Thanks for subscribing!", {
-        description: "You'll receive updates at " + email,
+        description: "You'll receive updates on new releases and exclusive offers.",
       });
       setEmail("");
+      setPhone("");
     }
   };
 
@@ -26,16 +28,20 @@ export const Footer = () => {
           <p className="text-muted-foreground text-sm mb-4">
             Get notified about new releases, sample packs, and exclusive content.
           </p>
-          <form onSubmit={handleSubscribe} className="flex gap-2">
+          <form onSubmit={handleSubscribe} className="space-y-3">
             <Input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1"
-              required
             />
-            <Button type="submit" className="neon-glow-sm">
+            <Input
+              type="tel"
+              placeholder="Phone number (optional)"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <Button type="submit" className="w-full neon-glow-sm">
               Subscribe
             </Button>
           </form>
