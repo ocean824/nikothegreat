@@ -259,18 +259,18 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-4"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-3.5 w-3.5" />
           Back to store
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Product Image */}
-          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border">
+          <div className="aspect-square bg-card rounded-lg overflow-hidden border border-border max-h-[500px]">
             {imageUrl ? (
               <img
                 src={imageUrl}
@@ -285,31 +285,31 @@ const ProductDetail = () => {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">
+              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
                 {product.productType || "Sample Kit"}
               </p>
-              <h1 className="text-3xl font-bold text-foreground mb-4">
+              <h1 className="text-2xl font-bold text-foreground mb-2">
                 {product.title}
               </h1>
-              <p className="text-3xl font-bold text-primary neon-glow-sm">${price}</p>
+              <p className="text-2xl font-bold text-primary neon-glow-sm">${price}</p>
             </div>
 
             {/* Audio Preview */}
             {audioSrc && (
-              <div className="bg-card border border-border rounded-lg p-4">
-                <div className="flex items-center gap-4">
+              <div className="bg-card border border-border rounded-lg p-3">
+                <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={toggleAudio}
-                    className="h-12 w-12 rounded-full"
+                    className="h-10 w-10 rounded-full"
                   >
                     {isPlaying ? (
-                      <Pause className="h-5 w-5" />
+                      <Pause className="h-4 w-4" />
                     ) : (
-                      <Play className="h-5 w-5 ml-0.5" />
+                      <Play className="h-4 w-4 ml-0.5" />
                     )}
                   </Button>
                   <div className="flex-1">
@@ -323,8 +323,8 @@ const ProductDetail = () => {
             {/* Description */}
             {product.description && (
               <div>
-                <h3 className="font-semibold text-foreground mb-3">Description</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <h3 className="text-sm font-semibold text-foreground mb-1.5">Description</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
                   {product.description}
                 </p>
               </div>
@@ -332,16 +332,16 @@ const ProductDetail = () => {
 
             {/* Variant Selection */}
             {product.variants?.edges && product.variants.edges.length > 1 && (
-              <div className="space-y-3">
-                <Label className="text-sm text-foreground">Format</Label>
-                <div className="flex gap-2 flex-wrap">
+              <div className="space-y-2">
+                <Label className="text-xs text-foreground">Format</Label>
+                <div className="flex gap-1.5 flex-wrap">
                   {product.variants.edges.map((variant) => (
                     <Button
                       key={variant.node.id}
                       variant={selectedVariantId === variant.node.id ? "default" : "outline"}
                       size="sm"
                       onClick={() => setSelectedVariantId(variant.node.id)}
-                      className="min-w-[80px]"
+                      className="h-8 text-xs"
                     >
                       {variant.node.title}
                     </Button>
@@ -354,32 +354,32 @@ const ProductDetail = () => {
             <Button
               onClick={handleAddToCart}
               className="w-full"
-              size="lg"
+              size="default"
               disabled={!selectedVariant}
             >
-              <ShoppingCart className="w-5 h-5 mr-2" />
+              <ShoppingCart className="w-4 h-4 mr-2" />
               Add to Cart
             </Button>
 
             {/* Bundle Upsell */}
             {relatedProducts.length > 0 && (
-              <div className="pt-6 border-t border-border">
-                <h3 className="font-semibold text-foreground mb-4">
+              <div className="pt-4 border-t border-border">
+                <h3 className="text-sm font-semibold text-foreground mb-3">
                   Trending Packs...
                 </h3>
                 
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-1.5 mb-3 flex-wrap">
                   {/* Current Product */}
-                  <div className="w-20 h-20 rounded overflow-hidden border border-border">
+                  <div className="w-14 h-14 rounded overflow-hidden border border-border flex-shrink-0">
                     {imageUrl && (
                       <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
                     )}
                   </div>
                   
-                  {relatedProducts.map((p, index) => (
-                    <div key={p.node.id} className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 text-muted-foreground" />
-                      <div className="w-20 h-20 rounded overflow-hidden border border-border">
+                  {relatedProducts.map((p) => (
+                    <div key={p.node.id} className="flex items-center gap-1.5">
+                      <Plus className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                      <div className="w-14 h-14 rounded overflow-hidden border border-border flex-shrink-0">
                         {p.node.images?.edges?.[0]?.node?.url && (
                           <img
                             src={p.node.images.edges[0].node.url}
@@ -391,12 +391,12 @@ const ProductDetail = () => {
                     </div>
                   ))}
                   
-                  <div className="ml-4 text-right">
-                    <p className="text-muted-foreground text-sm">Total price</p>
-                    <p className="text-xl font-bold text-primary neon-glow-sm">
+                  <div className="ml-auto text-right">
+                    <p className="text-xs text-muted-foreground">Total</p>
+                    <p className="text-lg font-bold text-primary neon-glow-sm">
                       ${getBundleDiscountedTotal().toFixed(2)}
                       {getBundleDiscount() > 0 && (
-                        <span className="text-muted-foreground line-through text-sm ml-2">
+                        <span className="text-muted-foreground line-through text-xs ml-1.5">
                           ${getBundleTotal().toFixed(2)}
                         </span>
                       )}
@@ -412,39 +412,40 @@ const ProductDetail = () => {
                 <Button
                   onClick={handleAddBundleToCart}
                   variant="outline"
-                  className="w-full mb-4"
-                  size="lg"
+                  className="w-full mb-3"
+                  size="default"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   ADD TO CART
                 </Button>
 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {/* Current Product */}
-                  <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border">
+                  <div className="flex items-center gap-2 p-2 bg-card rounded border border-border">
                     <Checkbox
                       id={`bundle-${product.id}`}
                       checked={bundleItems.has(product.id)}
                       onCheckedChange={() => toggleBundleItem(product.id)}
                       disabled
+                      className="h-4 w-4"
                     />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">
-                          <span className="text-muted-foreground">This item: </span>
-                          <span className="text-primary">{product.title}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs truncate">
+                          <span className="text-muted-foreground">This: </span>
+                          <span className="text-primary font-medium">{product.title}</span>
                         </span>
-                        <span className="font-semibold text-sm">${price}</span>
+                        <span className="font-semibold text-xs flex-shrink-0">${price}</span>
                       </div>
                       {product.variants?.edges && product.variants.edges.length > 1 && (
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1 mt-1.5">
                           {product.variants.edges.map((variant) => (
                             <Button
                               key={variant.node.id}
                               variant={selectedVariantId === variant.node.id ? "default" : "outline"}
                               size="sm"
                               onClick={() => setSelectedVariantId(variant.node.id)}
-                              className="h-7 text-xs px-2"
+                              className="h-6 text-[10px] px-1.5"
                             >
                               {variant.node.title}
                             </Button>
@@ -462,19 +463,20 @@ const ProductDetail = () => {
                     const hasVariants = p.node.variants?.edges && p.node.variants.edges.length > 1;
                     
                     return (
-                      <div key={p.node.id} className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border">
+                      <div key={p.node.id} className="flex items-center gap-2 p-2 bg-card rounded border border-border">
                         <Checkbox
                           id={`bundle-${p.node.id}`}
                           checked={bundleItems.has(p.node.id)}
                           onCheckedChange={() => toggleBundleItem(p.node.id)}
+                          className="h-4 w-4"
                         />
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-muted-foreground text-sm">{p.node.title}</span>
-                            <span className="font-semibold text-sm">${relatedPrice}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-muted-foreground text-xs truncate">{p.node.title}</span>
+                            <span className="font-semibold text-xs flex-shrink-0">${relatedPrice}</span>
                           </div>
                           {hasVariants && (
-                            <div className="flex gap-1.5">
+                            <div className="flex gap-1 mt-1.5">
                               {p.node.variants.edges.map((variant) => (
                                 <Button
                                   key={variant.node.id}
@@ -486,7 +488,7 @@ const ProductDetail = () => {
                                       setBundleItems(prev => new Set([...prev, p.node.id]));
                                     }
                                   }}
-                                  className="h-7 text-xs px-2"
+                                  className="h-6 text-[10px] px-1.5"
                                 >
                                   {variant.node.title}
                                 </Button>
