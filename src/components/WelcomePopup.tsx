@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -18,15 +19,17 @@ export const WelcomePopup = () => {
   const [phone, setPhone] = useState("");
   const [showCodes, setShowCodes] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem("niko-welcome-popup-seen");
-    if (!hasSeenPopup) {
+    if (!hasSeenPopup && location.pathname === "/") {
       const timer = setTimeout(() => {
         setOpen(true);
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [location.pathname]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
