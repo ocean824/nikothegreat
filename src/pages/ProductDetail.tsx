@@ -24,6 +24,26 @@ const audioPreviewMap: Record<string, string> = {
   "vibrant-darkness-vol-1": "/audio/vibrant-darkness-vol-1.mp3",
 };
 
+// Predefined bundle groups - each product shows its bundle partners
+const bundleGroups: string[][] = [
+  // Bundle 1: Haze, Mana, Unrequited Love Vol 1 & 2
+  ["haze-midi-phrases-vol-1", "mana-vol-1", "unrequited-love-vol-1", "unrequited-love-vol-2"],
+  // Bundle 2: Stained Glass Vol 1 & 2, Vintage Vibes, The Feels
+  ["stained-glass-vol-1", "stained-glass-vol-2", "vintage-vibes-vol-1", "the-feels-vol-1"],
+  // Bundle 3: Abstract Minds, Vibrant Darkness, Gray Area, Black Friday
+  ["abstract-minds-vol-1", "vibrant-darkness-vol-1", "gray-area-vol-1", "black-friday-vol-1"],
+];
+
+// Find which bundle group a product belongs to
+const getBundleGroupForHandle = (handle: string): string[] | null => {
+  for (const group of bundleGroups) {
+    if (group.includes(handle)) {
+      return group;
+    }
+  }
+  return null;
+};
+
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
   const [product, setProduct] = useState<ShopifyProduct["node"] | null>(null);
@@ -52,17 +72,17 @@ const ProductDetail = () => {
           setSelectedVariantId(data.variants.edges[0].node.id);
         }
 
-        // Fetch related products for bundle upsell
-        const allProducts = await fetchProducts(12);
-        // Prefer same product type, but fallback to any products if none match
-        let related = allProducts.filter(
-          (p) => p.node.handle !== handle && p.node.productType === data?.productType
-        ).slice(0, 3);
+        // Fetch related products for bundle upsell based on predefined groups
+        const allProducts = await fetchProducts(20);
+        const bundleGroup = handle ? getBundleGroupForHandle(handle) : null;
         
-        // If no products of same type, show other products
-        if (related.length === 0) {
-          related = allProducts.filter((p) => p.node.handle !== handle).slice(0, 3);
+        let related: ShopifyProduct[] = [];
+        if (bundleGroup) {
+          // Get the other products in this bundle group (excluding current product)
+          const otherHandles = bundleGroup.filter(h => h !== handle);
+          related = allProducts.filter(p => otherHandles.includes(p.node.handle));
         }
+        
         setRelatedProducts(related);
         
         // Pre-select current product in bundle and set default variants
