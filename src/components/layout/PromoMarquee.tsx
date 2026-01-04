@@ -1,5 +1,5 @@
 export const PromoMarquee = () => {
-  const promoText = "🎆 NEW YEAR LAUNCH SALE • 25% OFF 3+ KITS (CODE: NEWYEAR25) • 50% OFF 5+ KITS (CODE: NEWYEAR50) • 🎆 ";
+  const promoText = "🎆 NEW YEAR LAUNCH SALE • UP TO 50% OFF BUNDLES • SIGN UP FOR EXCLUSIVE CODES • 🎆 ";
   const repeatedText = Array(8).fill(promoText).join("");
 
   return (
