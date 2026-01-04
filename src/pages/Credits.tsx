@@ -88,11 +88,6 @@ const credits = [
   { song: "Genie", artist: "YoungBoy Never Broke Again", album: "Until Death Call My Name Reloaded" },
 ];
 
-const getSongLink = (song: string, artist: string) => {
-  const query = encodeURIComponent(`${song} ${artist.split(",")[0]}`);
-  return `https://song.link/s/${query}`;
-};
-
 const Credits = () => {
   const [email, setEmail] = useState("");
 
@@ -161,20 +156,14 @@ const Credits = () => {
             
             <div className="divide-y divide-border">
               {credits.map((credit, index) => (
-                <a
+                <div
                   key={index}
-                  href={getSongLink(credit.song, credit.artist)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/30 transition-colors group cursor-pointer"
+                  className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/30 transition-colors"
                 >
-                  <span className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
-                    {credit.song}
-                    <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </span>
+                  <span className="font-medium text-foreground">{credit.song}</span>
                   <span className="text-muted-foreground">{credit.artist}</span>
                   <span className="text-muted-foreground truncate">{credit.album}</span>
-                </a>
+                </div>
               ))}
             </div>
             
