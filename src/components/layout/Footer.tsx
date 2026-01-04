@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Instagram, Mail } from "lucide-react";
 
 export const Footer = () => {
@@ -7,31 +6,9 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow">
+          <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow-sm">
             NIKO THE GREAT
           </div>
-
-          {/* Links */}
-          <nav className="flex items-center gap-6">
-            <Link
-              to="/terms"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              to="/credits"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Credits
-            </Link>
-            <Link
-              to="/contact"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Contact
-            </Link>
-          </nav>
 
           {/* Social */}
           <div className="flex items-center gap-4">

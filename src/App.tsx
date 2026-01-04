@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import SampleKits from "./pages/SampleKits";
 import DrumKits from "./pages/DrumKits";
+import MidiKits from "./pages/MidiKits";
 import Terms from "./pages/Terms";
 import Credits from "./pages/Credits";
 import Contact from "./pages/Contact";
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/sample-kits" element={<SampleKits />} />
           <Route path="/drum-kits" element={<DrumKits />} />
+          <Route path="/midi-kits" element={<MidiKits />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/credits" element={<Credits />} />
           <Route path="/contact" element={<Contact />} />

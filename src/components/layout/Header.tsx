@@ -13,6 +13,7 @@ export const Header = () => {
   const navLinks = [
     { to: "/sample-kits", label: "Sample Kits" },
     { to: "/drum-kits", label: "Drum Kits" },
+    { to: "/midi-kits", label: "MIDI Kits" },
     { to: "/terms", label: "Terms" },
     { to: "/credits", label: "Credits" },
     { to: "/contact", label: "Contact" },

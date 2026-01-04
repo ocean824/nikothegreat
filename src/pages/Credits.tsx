@@ -83,15 +83,12 @@ const Credits = () => {
   return (
     <Layout showMarquee={false}>
       <section className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
-            <span className="text-primary neon-glow-sm">Production Credits</span>
+            Production Credits
           </h1>
-          <p className="text-muted-foreground text-lg mb-2">
+          <p className="text-muted-foreground text-lg mb-6">
             Music produced, co-produced, or featuring Niko The Great
-          </p>
-          <p className="text-primary neon-glow-sm text-2xl font-bold mb-6">
-            {credits.length} Credits
           </p>
           <a
             href="https://music.apple.com/library/playlist/p.mmRl3ZAfvVYGqq"
@@ -106,17 +103,17 @@ const Credits = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="bg-card rounded-lg border border-border overflow-hidden">
-            <div className="grid grid-cols-3 gap-4 p-4 border-b border-border bg-muted text-muted-foreground text-sm font-medium">
-              <span>Song</span>
-              <span>Artist</span>
-              <span>Album</span>
+            <div className="grid grid-cols-3 gap-4 p-4 border-b border-border bg-muted/50">
+              <span className="text-muted-foreground text-sm">Song</span>
+              <span className="text-muted-foreground text-sm">Artist</span>
+              <span className="text-muted-foreground text-sm">Album</span>
             </div>
             
-            <div className="divide-y divide-border max-h-[600px] overflow-y-auto">
+            <div className="divide-y divide-border">
               {credits.map((credit, index) => (
-                <div key={index} className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/50 transition-colors">
+                <div key={index} className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/30 transition-colors">
                   <span className="font-medium text-foreground">{credit.song}</span>
-                  <span className="text-primary neon-glow-sm">{credit.artist}</span>
+                  <span className="text-muted-foreground">{credit.artist}</span>
                   <span className="text-muted-foreground truncate">{credit.album}</span>
                 </div>
               ))}
