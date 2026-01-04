@@ -44,7 +44,7 @@ const Index = () => {
             <span className="text-primary neon-glow-sm">Compositions</span>
           </h1>
           <p className="text-muted-foreground text-lg">
-            Handcrafted by Niko The Great for your next hit!
+            All original, handcrafted by Niko The Great for your next hit!
           </p>
         </div>
 
