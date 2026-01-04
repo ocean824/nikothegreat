@@ -4,9 +4,10 @@ interface AudioWaveformProps {
   audioSrc: string;
   isPlaying: boolean;
   audioRef: React.RefObject<HTMLAudioElement | null>;
+  onSeek?: (progress: number) => void;
 }
 
-export const AudioWaveform = ({ audioSrc, isPlaying, audioRef }: AudioWaveformProps) => {
+export const AudioWaveform = ({ audioSrc, isPlaying, audioRef, onSeek }: AudioWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [waveformData, setWaveformData] = useState<number[]>([]);
@@ -128,8 +129,36 @@ export const AudioWaveform = ({ audioSrc, isPlaying, audioRef }: AudioWaveformPr
     });
   }, [waveformData, progress, dimensions]);
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || !audioRef.current) return;
+    
+    e.stopPropagation();
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickProgress = clickX / rect.width;
+    
+    // Clamp between 0 and 1
+    const clampedProgress = Math.max(0, Math.min(1, clickProgress));
+    
+    // Seek audio
+    if (audioRef.current.duration) {
+      audioRef.current.currentTime = clampedProgress * audioRef.current.duration;
+      setProgress(clampedProgress);
+    }
+    
+    // Notify parent to start playing if not already
+    if (onSeek) {
+      onSeek(clampedProgress);
+    }
+  };
+
   return (
-    <div ref={containerRef} className="w-full h-10">
+    <div 
+      ref={containerRef} 
+      className="w-full h-10 cursor-pointer"
+      onClick={handleClick}
+    >
       <canvas
         ref={canvasRef}
         width={dimensions.width}
