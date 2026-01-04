@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Instagram, ShoppingCart, Youtube, Mail } from "lucide-react";
+import { Instagram, ShoppingCart, Youtube, Mail, User } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,12 @@ export const Header = () => {
             >
               <Mail className="h-5 w-5" />
             </a>
+            <Link
+              to="/account"
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <User className="h-5 w-5" />
+            </Link>
             <Button
               variant="ghost"
               size="icon"

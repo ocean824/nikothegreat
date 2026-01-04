@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      purchase_items: {
+        Row: {
+          created_at: string
+          download_url: string | null
+          id: string
+          price: number | null
+          product_handle: string | null
+          product_title: string
+          purchase_id: string
+          quantity: number | null
+          variant_title: string | null
+        }
+        Insert: {
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          price?: number | null
+          product_handle?: string | null
+          product_title: string
+          purchase_id: string
+          quantity?: number | null
+          variant_title?: string | null
+        }
+        Update: {
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          price?: number | null
+          product_handle?: string | null
+          product_title?: string
+          purchase_id?: string
+          quantity?: number | null
+          variant_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_items_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      purchases: {
+        Row: {
+          created_at: string
+          currency: string | null
+          email: string
+          id: string
+          order_date: string
+          shopify_order_id: string
+          shopify_order_number: string | null
+          status: string | null
+          total_amount: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          email: string
+          id?: string
+          order_date?: string
+          shopify_order_id: string
+          shopify_order_number?: string | null
+          status?: string | null
+          total_amount?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          email?: string
+          id?: string
+          order_date?: string
+          shopify_order_id?: string
+          shopify_order_number?: string | null
+          status?: string | null
+          total_amount?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
