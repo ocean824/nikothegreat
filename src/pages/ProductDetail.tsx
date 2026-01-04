@@ -327,29 +327,28 @@ const ProductDetail = () => {
 
             {/* Audio Preview */}
             {audioSrc && (
-              <div className="bg-card border border-border rounded-lg p-3">
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => toggleAudio()}
-                    className="h-10 w-10 rounded-full flex-shrink-0"
-                  >
-                    {isPlaying && playingHandle === handle ? (
-                      <Pause className="h-4 w-4" />
-                    ) : (
-                      <Play className="h-4 w-4 ml-0.5" />
-                    )}
-                  </Button>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">Preview</p>
-                    <AudioWaveform 
-                      audioSrc={audioSrc}
-                      audioRef={audioRef} 
-                      isPlaying={isPlaying && playingHandle === handle}
-                      className="mt-1"
-                    />
-                  </div>
+              <div 
+                className="bg-card border border-border rounded-lg p-3 flex items-center gap-3 cursor-pointer"
+                onClick={() => toggleAudio()}
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10 rounded-full flex-shrink-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {isPlaying && playingHandle === handle ? (
+                    <Pause className="h-4 w-4" />
+                  ) : (
+                    <Play className="h-4 w-4 ml-0.5" />
+                  )}
+                </Button>
+                <div className="flex-1 min-w-0">
+                  <AudioWaveform 
+                    audioSrc={audioSrc}
+                    audioRef={audioRef} 
+                    isPlaying={isPlaying && playingHandle === handle}
+                  />
                 </div>
               </div>
             )}
