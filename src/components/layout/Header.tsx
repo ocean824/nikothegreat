@@ -23,7 +23,7 @@ export const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="font-pixel text-primary text-lg tracking-wider neon-glow">
+          <Link to="/" className="font-pixel text-primary text-lg tracking-wider neon-glow-sm">
             NIKO
           </Link>
 

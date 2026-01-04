@@ -27,11 +27,56 @@ const credits = [
   { song: "BLESS UP (feat. Kodie Shane)", artist: "Nessly", album: "Still Finessin" },
   { song: "Love Letter (feat. Trippie Redd)", artist: "Nessly", album: "Still Finessin" },
   { song: "Ramen Noodles (feat. B La B)", artist: "Yung Bans", album: "Misunderstood" },
-  { song: "Dej Loaf & Jacquees", artist: "Fuck Yo DJ", album: "Fuck Yo DJ - Single" },
+  { song: "Fuck Yo DJ", artist: "Dej Loaf & Jacquees", album: "Fuck Yo DJ - Single" },
   { song: "Want The Smoke", artist: "ChriseanRock", album: "Big Bussiness" },
   { song: "Moonrocks (feat. Lil Yachty)", artist: "Yung Bans", album: "Misunderstood" },
   { song: "Drippin In Designer", artist: "Autumn!", album: "The Arrival" },
   { song: "Broke No Mo (feat. Yung Bans & Lightshow)", artist: "Lil Gotit", album: "I Luv Everything" },
+  { song: "Flex Up", artist: "Lil Gotit", album: "Top Chef Gotit" },
+  { song: "Designer Talk", artist: "Lil Gotit", album: "Superstar Creature" },
+  { song: "Pop My Shit", artist: "Lil Gotit", album: "Hood Baby 2" },
+  { song: "Drip 2 Hard", artist: "Lil Baby & Gunna", album: "Drip Harder" },
+  { song: "Real As It Gets", artist: "Lil Baby & EST Gee", album: "My Turn (Deluxe)" },
+  { song: "Woah", artist: "Lil Baby", album: "My Turn" },
+  { song: "Sum 2 Prove", artist: "Lil Baby", album: "My Turn" },
+  { song: "Emotionally Scarred", artist: "Lil Baby", album: "My Turn" },
+  { song: "Grace", artist: "Lil Baby & 42 Dugg", album: "My Turn (Deluxe)" },
+  { song: "We Paid", artist: "Lil Baby & 42 Dugg", album: "My Turn (Deluxe)" },
+  { song: "No Sucker", artist: "Lil Baby & Moneybagg Yo", album: "Street Gossip" },
+  { song: "Pure Cocaine", artist: "Lil Baby", album: "Harder Than Ever" },
+  { song: "Global", artist: "Lil Baby", album: "Street Gossip" },
+  { song: "Freestyle", artist: "Lil Baby", album: "Street Gossip" },
+  { song: "Time", artist: "Gunna", album: "Wunna" },
+  { song: "Dollaz On My Head", artist: "Gunna & Young Thug", album: "Wunna" },
+  { song: "Skybox", artist: "Gunna", album: "Wunna" },
+  { song: "Pushin P", artist: "Gunna & Future ft. Young Thug", album: "DS4EVER" },
+  { song: "Private Island", artist: "Gunna", album: "DS4EVER" },
+  { song: "Banking On Me", artist: "Gunna", album: "DS4EVER" },
+  { song: "Poochie Gown", artist: "Gunna", album: "Drip Season 4" },
+  { song: "Too Easy", artist: "Gunna & Future", album: "DS4EVER" },
+  { song: "Empire", artist: "Gunna", album: "Drip Season 3" },
+  { song: "3 Headed Snake", artist: "Gunna & Young Thug", album: "Drip or Drown 2" },
+  { song: "Richard Millie Plain", artist: "Gunna", album: "Drip Season 3" },
+  { song: "Same Yung N*gga", artist: "Gunna", album: "Drip or Drown" },
+  { song: "Oh Okay", artist: "Gunna & Young Thug ft. Lil Baby", album: "Drip or Drown 2" },
+  { song: "Speed It Up", artist: "Gunna", album: "Drip or Drown 2" },
+  { song: "Baby Birkin", artist: "Gunna", album: "Wunna" },
+  { song: "Blindfold", artist: "Gunna", album: "Wunna" },
+  { song: "Rockstar Bikers & Chains", artist: "Gunna", album: "Wunna (Deluxe)" },
+  { song: "Livin Wild", artist: "Gunna", album: "Wunna (Deluxe)" },
+  { song: "Met Gala", artist: "Gunna & Young Thug", album: "Punk" },
+  { song: "Ski", artist: "Young Thug", album: "So Much Fun" },
+  { song: "Hot", artist: "Young Thug ft. Gunna", album: "So Much Fun" },
+  { song: "Just How It Is", artist: "Young Thug", album: "So Much Fun" },
+  { song: "Millions", artist: "Young Thug", album: "Punk" },
+  { song: "Tick Tock", artist: "Young Thug", album: "Punk" },
+  { song: "Die Slow", artist: "Young Thug", album: "Punk" },
+  { song: "Hate The Game", artist: "Young Thug", album: "Punk" },
+  { song: "Peepin Out The Window", artist: "Young Thug & Future ft. BSlime", album: "Punk" },
+  { song: "Bubbly", artist: "Young Thug ft. Drake & Travis Scott", album: "Punk" },
+  { song: "Road Rage", artist: "Young Thug", album: "Business Is Business" },
+  { song: "Oh U Went", artist: "Young Thug & Drake", album: "Punk" },
+  { song: "Stressed", artist: "Young Thug ft. J. Cole & T-Shyne", album: "Punk" },
 ];
 
 const Credits = () => {
@@ -39,15 +84,20 @@ const Credits = () => {
     <Layout showMarquee={false}>
       <section className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Production Credits</h1>
-          <p className="text-muted-foreground text-lg mb-6">
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            <span className="text-primary neon-glow-sm">Production Credits</span>
+          </h1>
+          <p className="text-muted-foreground text-lg mb-2">
             Music produced, co-produced, or featuring Niko The Great
+          </p>
+          <p className="text-primary neon-glow-sm text-2xl font-bold mb-6">
+            {credits.length} Credits
           </p>
           <a
             href="https://music.apple.com/library/playlist/p.mmRl3ZAfvVYGqq"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-primary hover:underline"
+            className="inline-flex items-center gap-2 text-primary neon-glow-sm hover:underline"
           >
             View on Apple Music
             <ExternalLink className="h-4 w-4" />
@@ -62,11 +112,11 @@ const Credits = () => {
               <span>Album</span>
             </div>
             
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-border max-h-[600px] overflow-y-auto">
               {credits.map((credit, index) => (
                 <div key={index} className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/50 transition-colors">
                   <span className="font-medium text-foreground">{credit.song}</span>
-                  <span className="text-muted-foreground">{credit.artist}</span>
+                  <span className="text-primary neon-glow-sm">{credit.artist}</span>
                   <span className="text-muted-foreground truncate">{credit.album}</span>
                 </div>
               ))}
