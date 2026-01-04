@@ -15,7 +15,7 @@ const audioPreviewMap: Record<string, string> = {
   "black-friday-vol-1": "/audio/black-friday-vol-1.mp3",
   "the-feels-vol-1": "/audio/the-feels-vol-1.mp3",
   "gray-area-vol-1": "/audio/gray-area-vol-1.mp3",
-  "haze-midi-kit": "/audio/haze-midi-kit.mp3",
+  "haze-midi-phrases-vol-1": "/audio/haze-midi-kit.mp3",
   "mana-vol-1": "/audio/mana-vol-1.mp3",
   "stained-glass-vol-1": "/audio/stained-glass-vol-1.mp3",
   "stained-glass-vol-2": "/audio/stained-glass-vol-2.mp3",
@@ -302,6 +302,18 @@ const ProductDetail = () => {
                 </div>
               </div>
             )}
+
+            {/* Description */}
+            {product.description && (
+              <div>
+                <h3 className="font-semibold text-foreground mb-3">Description</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {product.description}
+                </p>
+              </div>
+            )}
+
+            {/* Variant Selection */}
             {product.variants?.edges && product.variants.edges.length > 1 && (
               <div className="space-y-3">
                 <Label className="text-sm text-foreground">Format</Label>
@@ -326,7 +338,7 @@ const ProductDetail = () => {
               onClick={handleAddToCart}
               className="w-full"
               size="lg"
-              disabled={!selectedVariant?.availableForSale}
+              disabled={!selectedVariant}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
               Add to Cart
@@ -422,15 +434,6 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Description */}
-            {product.description && (
-              <div className="pt-6 border-t border-border">
-                <h3 className="font-semibold text-foreground mb-3">Description</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </div>
