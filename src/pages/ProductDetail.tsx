@@ -136,6 +136,24 @@ const ProductDetail = () => {
     }
   };
 
+  const handleSeek = () => {
+    // Ensure audio element exists
+    if (!audioRef.current && audioSrc) {
+      audioRef.current = new Audio(audioSrc);
+      audioRef.current.onended = () => {
+        setIsPlaying(false);
+        setPlayingHandle(null);
+      };
+    }
+    
+    // If not playing, start playing after seek
+    if (!isPlaying && audioRef.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+      setPlayingHandle(handle || null);
+    }
+  };
+
   const selectedVariant = product?.variants?.edges?.find(
     (v) => v.node.id === selectedVariantId
   )?.node;
@@ -351,6 +369,7 @@ const ProductDetail = () => {
                     audioSrc={audioSrc}
                     audioRef={audioRef} 
                     isPlaying={isPlaying && playingHandle === handle}
+                    onSeek={handleSeek}
                   />
                 </div>
               </div>
