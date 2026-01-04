@@ -32,6 +32,7 @@ const ProductDetail = () => {
   const [bundleItems, setBundleItems] = useState<Set<string>>(new Set());
   const [bundleVariants, setBundleVariants] = useState<Record<string, string>>({}); // productId -> variantId
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playingHandle, setPlayingHandle] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const setCartOpen = useCartStore((state) => state.setOpen);
@@ -90,20 +91,41 @@ const ProductDetail = () => {
     };
   }, []);
 
-  const toggleAudio = () => {
-    if (!audioSrc) return;
+  const toggleAudio = (audioHandle?: string) => {
+    const targetHandle = audioHandle || handle;
+    const targetSrc = targetHandle ? audioPreviewMap[targetHandle] : null;
+    if (!targetSrc) return;
 
-    if (!audioRef.current) {
-      audioRef.current = new Audio(audioSrc);
-      audioRef.current.onended = () => setIsPlaying(false);
+    // If clicking a different audio, stop current and play new
+    if (playingHandle && playingHandle !== targetHandle) {
+      audioRef.current?.pause();
+      audioRef.current = new Audio(targetSrc);
+      audioRef.current.onended = () => {
+        setIsPlaying(false);
+        setPlayingHandle(null);
+      };
+      audioRef.current.play();
+      setIsPlaying(true);
+      setPlayingHandle(targetHandle);
+      return;
     }
 
-    if (isPlaying) {
+    if (!audioRef.current || playingHandle !== targetHandle) {
+      audioRef.current = new Audio(targetSrc);
+      audioRef.current.onended = () => {
+        setIsPlaying(false);
+        setPlayingHandle(null);
+      };
+    }
+
+    if (isPlaying && playingHandle === targetHandle) {
       audioRef.current.pause();
       setIsPlaying(false);
+      setPlayingHandle(null);
     } else {
       audioRef.current.play();
       setIsPlaying(true);
+      setPlayingHandle(targetHandle);
     }
   };
 
@@ -303,10 +325,10 @@ const ProductDetail = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={toggleAudio}
+                    onClick={() => toggleAudio()}
                     className="h-10 w-10 rounded-full"
                   >
-                    {isPlaying ? (
+                    {isPlaying && playingHandle === handle ? (
                       <Pause className="h-4 w-4" />
                     ) : (
                       <Play className="h-4 w-4 ml-0.5" />
@@ -421,7 +443,7 @@ const ProductDetail = () => {
 
                 <div className="space-y-2">
                   {/* Current Product */}
-                  <div className="flex items-center gap-3 p-2 bg-card rounded border border-border">
+                  <div className="flex items-center gap-2 p-2 bg-card rounded border border-border">
                     <Checkbox
                       id={`bundle-${product.id}`}
                       checked={bundleItems.has(product.id)}
@@ -429,7 +451,21 @@ const ProductDetail = () => {
                       disabled
                       className="h-4 w-4"
                     />
-                    <div className="w-12 h-12 rounded overflow-hidden border border-border flex-shrink-0">
+                    {audioSrc && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleAudio()}
+                        className="h-8 w-8 rounded-full flex-shrink-0"
+                      >
+                        {isPlaying && playingHandle === handle ? (
+                          <Pause className="h-3 w-3" />
+                        ) : (
+                          <Play className="h-3 w-3 ml-0.5" />
+                        )}
+                      </Button>
+                    )}
+                    <div className="w-10 h-10 rounded overflow-hidden border border-border flex-shrink-0">
                       {imageUrl && (
                         <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
                       )}
@@ -443,14 +479,14 @@ const ProductDetail = () => {
                         <span className="font-semibold text-xs flex-shrink-0">${price}</span>
                       </div>
                       {product.variants?.edges && product.variants.edges.length > 1 && (
-                        <div className="flex gap-1 mt-1.5">
+                        <div className="flex gap-1 mt-1">
                           {product.variants.edges.map((variant) => (
                             <Button
                               key={variant.node.id}
                               variant={selectedVariantId === variant.node.id ? "default" : "outline"}
                               size="sm"
                               onClick={() => setSelectedVariantId(variant.node.id)}
-                              className="h-6 text-[10px] px-1.5"
+                              className="h-5 text-[10px] px-1.5"
                             >
                               {variant.node.title}
                             </Button>
@@ -467,16 +503,31 @@ const ProductDetail = () => {
                     const relatedPrice = parseFloat(selectedBundleVariant?.price?.amount || p.node.priceRange?.minVariantPrice?.amount || "0").toFixed(2);
                     const hasVariants = p.node.variants?.edges && p.node.variants.edges.length > 1;
                     const relatedImageUrl = p.node.images?.edges?.[0]?.node?.url;
+                    const relatedAudioSrc = audioPreviewMap[p.node.handle];
                     
                     return (
-                      <div key={p.node.id} className="flex items-center gap-3 p-2 bg-card rounded border border-border">
+                      <div key={p.node.id} className="flex items-center gap-2 p-2 bg-card rounded border border-border">
                         <Checkbox
                           id={`bundle-${p.node.id}`}
                           checked={bundleItems.has(p.node.id)}
                           onCheckedChange={() => toggleBundleItem(p.node.id)}
                           className="h-4 w-4"
                         />
-                        <div className="w-12 h-12 rounded overflow-hidden border border-border flex-shrink-0">
+                        {relatedAudioSrc && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => toggleAudio(p.node.handle)}
+                            className="h-8 w-8 rounded-full flex-shrink-0"
+                          >
+                            {isPlaying && playingHandle === p.node.handle ? (
+                              <Pause className="h-3 w-3" />
+                            ) : (
+                              <Play className="h-3 w-3 ml-0.5" />
+                            )}
+                          </Button>
+                        )}
+                        <div className="w-10 h-10 rounded overflow-hidden border border-border flex-shrink-0">
                           {relatedImageUrl && (
                             <img src={relatedImageUrl} alt={p.node.title} className="w-full h-full object-cover" />
                           )}
@@ -487,7 +538,7 @@ const ProductDetail = () => {
                             <span className="font-semibold text-xs flex-shrink-0">${relatedPrice}</span>
                           </div>
                           {hasVariants && (
-                            <div className="flex gap-1 mt-1.5">
+                            <div className="flex gap-1 mt-1">
                               {p.node.variants.edges.map((variant) => (
                                 <Button
                                   key={variant.node.id}
@@ -499,7 +550,7 @@ const ProductDetail = () => {
                                       setBundleItems(prev => new Set([...prev, p.node.id]));
                                     }
                                   }}
-                                  className="h-6 text-[10px] px-1.5"
+                                  className="h-5 text-[10px] px-1.5"
                                 >
                                   {variant.node.title}
                                 </Button>
