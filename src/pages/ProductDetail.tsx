@@ -1,13 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { fetchProductByHandle, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
-import { ArrowLeft, ShoppingCart, Plus } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Plus, Play, Pause } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+
+// Audio preview mapping by product handle
+const audioPreviewMap: Record<string, string> = {
+  "abstract-minds-vol-1": "/audio/abstract-minds-vol-1.mp3",
+  "black-friday-vol-1": "/audio/black-friday-vol-1.mp3",
+  "the-feels-vol-1": "/audio/the-feels-vol-1.mp3",
+  "gray-area-vol-1": "/audio/gray-area-vol-1.mp3",
+  "haze-midi-kit": "/audio/haze-midi-kit.mp3",
+  "mana-vol-1": "/audio/mana-vol-1.mp3",
+  "stained-glass-vol-1": "/audio/stained-glass-vol-1.mp3",
+  "stained-glass-vol-2": "/audio/stained-glass-vol-2.mp3",
+  "unrequited-love-vol-1": "/audio/unrequited-love-vol-1.mp3",
+  "vibrant-darkness-vol-1": "/audio/vibrant-darkness-vol-1.mp3",
+};
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -16,8 +30,12 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
   const [bundleItems, setBundleItems] = useState<Set<string>>(new Set());
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const setCartOpen = useCartStore((state) => state.setOpen);
+
+  const audioSrc = handle ? audioPreviewMap[handle] : null;
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -50,6 +68,33 @@ const ProductDetail = () => {
 
     loadProduct();
   }, [handle]);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const toggleAudio = () => {
+    if (!audioSrc) return;
+
+    if (!audioRef.current) {
+      audioRef.current = new Audio(audioSrc);
+      audioRef.current.onended = () => setIsPlaying(false);
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
 
   const selectedVariant = product?.variants?.edges?.find(
     (v) => v.node.id === selectedVariantId
@@ -234,7 +279,29 @@ const ProductDetail = () => {
               <p className="text-3xl font-bold text-primary neon-glow-sm">${price}</p>
             </div>
 
-            {/* Variant Selection */}
+            {/* Audio Preview */}
+            {audioSrc && (
+              <div className="bg-card border border-border rounded-lg p-4">
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={toggleAudio}
+                    className="h-12 w-12 rounded-full"
+                  >
+                    {isPlaying ? (
+                      <Pause className="h-5 w-5" />
+                    ) : (
+                      <Play className="h-5 w-5 ml-0.5" />
+                    )}
+                  </Button>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-foreground">Preview</p>
+                    <p className="text-xs text-muted-foreground">Listen before you buy</p>
+                  </div>
+                </div>
+              </div>
+            )}
             {product.variants?.edges && product.variants.edges.length > 1 && (
               <div className="space-y-3">
                 <Label className="text-sm text-foreground">Format</Label>
