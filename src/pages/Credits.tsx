@@ -1,5 +1,9 @@
 import { Layout } from "@/components/layout/Layout";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const credits = [
   { song: "i'll never forgive you", artist: "Angelo Mota", album: "i changed my mind" },
@@ -84,10 +88,51 @@ const credits = [
   { song: "Genie", artist: "YoungBoy Never Broke Again", album: "Until Death Call My Name Reloaded" },
 ];
 
+const getSongLink = (song: string, artist: string) => {
+  const query = encodeURIComponent(`${song} ${artist.split(",")[0]}`);
+  return `https://song.link/s/${query}`;
+};
+
 const Credits = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast.success("Thanks for subscribing!", {
+        description: "You'll receive updates at " + email,
+      });
+      setEmail("");
+    }
+  };
+
   return (
     <Layout showMarquee={false}>
       <section className="container mx-auto px-4 py-12">
+        {/* Email Subscribe Widget */}
+        <div className="max-w-xl mx-auto mb-12 p-6 bg-card rounded-lg border border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <Mail className="h-5 w-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Stay Updated</h3>
+          </div>
+          <p className="text-muted-foreground text-sm mb-4">
+            Get notified about new releases, sample packs, and exclusive content.
+          </p>
+          <form onSubmit={handleSubscribe} className="flex gap-2">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1"
+              required
+            />
+            <Button type="submit" className="neon-glow-sm">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
             Production Credits
@@ -116,11 +161,20 @@ const Credits = () => {
             
             <div className="divide-y divide-border">
               {credits.map((credit, index) => (
-                <div key={index} className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/30 transition-colors">
-                  <span className="font-medium text-foreground">{credit.song}</span>
+                <a
+                  key={index}
+                  href={getSongLink(credit.song, credit.artist)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid grid-cols-3 gap-4 p-4 hover:bg-muted/30 transition-colors group cursor-pointer"
+                >
+                  <span className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                    {credit.song}
+                    <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </span>
                   <span className="text-muted-foreground">{credit.artist}</span>
                   <span className="text-muted-foreground truncate">{credit.album}</span>
-                </div>
+                </a>
               ))}
             </div>
             
