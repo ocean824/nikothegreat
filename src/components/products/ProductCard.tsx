@@ -14,7 +14,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       to={`/product/${node.handle}`}
-      className="product-card group block bg-card rounded-lg overflow-hidden border border-border hover:border-primary/50 transition-all duration-300"
+      className="product-card group block bg-card rounded-lg overflow-hidden border border-border hover:border-primary/50 hover:neon-border-glow transition-all duration-300"
     >
       <div className="aspect-square relative overflow-hidden bg-muted">
         {imageUrl ? (
@@ -37,7 +37,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <h3 className="font-semibold text-foreground mb-2 truncate">
           {node.title}
         </h3>
-        <p className="text-lg font-bold text-primary">
+        <p className="text-lg font-bold text-primary neon-glow-sm">
           ${price}
         </p>
       </div>

@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <div className="font-pixel text-primary text-sm tracking-[0.3em]">
+          <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow">
             NIKO THE GREAT
           </div>
 
