@@ -34,7 +34,7 @@ const ProductDetail = () => {
   const [bundleVariants, setBundleVariants] = useState<Record<string, string>>({}); // productId -> variantId
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingHandle, setPlayingHandle] = useState<string | null>(null);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const setCartOpen = useCartStore((state) => state.setOpen);
