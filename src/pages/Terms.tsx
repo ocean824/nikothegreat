@@ -14,7 +14,7 @@ const Terms = () => {
           NIKO THE GREAT MASTER USE LICENSE AGREEMENT
         </h2>
 
-        <p className="text-primary mb-6">(Effective Upon Purchase or Download)</p>
+        <p className="text-primary neon-glow-sm mb-6">(Effective Upon Purchase or Download)</p>
 
         <div className="prose prose-invert max-w-none space-y-6 text-secondary-foreground">
           <p>
@@ -30,7 +30,7 @@ const Terms = () => {
             bound by the terms of this Agreement.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">1. GRANT OF LICENSE</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">1. GRANT OF LICENSE</h3>
 
           <p>
             Licensor hereby grants to Licensee a non-exclusive, non-transferable, worldwide license 
@@ -71,69 +71,105 @@ const Terms = () => {
             only to the restriction above.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">2. RESTRICTIONS</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">2. RESTRICTIONS</h3>
 
-          <p>Licensee shall NOT:</p>
+          <p>Licensee may not:</p>
 
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Resell, sublicense, redistribute, or otherwise transfer any raw Materials in their original or modified form.</li>
-            <li>Include Materials in any sample pack, sound library, virtual instrument, or similar product intended for resale or distribution.</li>
-            <li>Claim copyright ownership of the raw Materials.</li>
-            <li>Use Materials in projects that defame, harm, or violate applicable law.</li>
+            <li>Resell, share, or redistribute the Materials (in whole or in part) as standalone content or as part of any other sample library or sound pack.</li>
+            <li>Claim full ownership/authorship of the original Materials, stems, or compositions.</li>
+            <li>Use the name "Niko The Great" or the Creator's name in a misleading way that implies endorsement beyond proper credit.</li>
+            <li>Use samples in isolation as standalone tracks without additional creative input.</li>
           </ul>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">3. OWNERSHIP</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">3. RIGHTS AND OWNERSHIP</h3>
 
           <p>
-            All ownership, copyright, and intellectual property rights in and to the Materials remain 
-            solely with Sample Society, LLC and/or its Creators. Licensee acquires only the limited 
-            rights set forth in this Agreement.
+            All copyrights in and to the original Materials remain the sole property of Niko The Great 
+            and the individual Creator(s). This license grants use rights only; it does not transfer ownership. 
+            Licensee owns only the newly created derivative work, subject to the publishing and credit 
+            obligations for Master Use Materials. Creators retain their full master and publishing interests 
+            in their original works.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">4. WARRANTIES & DISCLAIMERS</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">4. ROYALTIES, CREDIT, AND REGISTRATION</h3>
+
+          <p className="font-semibold">For Compositions, Stems, and Drum Breaks:</p>
+          <ul className="list-disc list-inside space-y-2 ml-4 mb-4">
+            <li>Licensee must credit the Creator(s) in all public releases (e.g., "Prod. [Creator Name]" or "Contains sample(s) by [Creator Name] via Niko The Great").</li>
+            <li>Licensee must honor agreed publishing splits (fair/even default 50% writer and 50% publisher split).</li>
+            <li>Licensee shall provide publishing registration details and/or release metadata to Niko The Great or the Creator(s) upon request.</li>
+            <li>If the derived work is commercially released or placed (sync, label, film, etc.), Licensee must ensure Creator(s) are credited and compensated accordingly equivalent to the terms of use.</li>
+          </ul>
+
+          <p className="font-semibold">For One-Shots and Sound Banks:</p>
+          <ul className="list-disc list-inside space-y-2 ml-4">
+            <li>No royalties, credit, or registration is required.</li>
+          </ul>
+
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">5. REPRESENTATIONS AND WARRANTIES</h3>
+
+          <p className="font-semibold mb-2">Niko The Great and its Creators warrant that:</p>
+          <ul className="list-disc list-inside space-y-2 ml-4 mb-4">
+            <li>The Materials are original and owned or properly licensed.</li>
+            <li>The Materials do not knowingly infringe upon any third-party rights.</li>
+          </ul>
+
+          <p className="font-semibold mb-2">Licensee warrants that:</p>
+          <ul className="list-disc list-inside space-y-2 ml-4">
+            <li>They will use the Materials only as permitted herein.</li>
+            <li>They will not misrepresent ownership or authorship of the underlying Materials.</li>
+          </ul>
+
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">6. TERM AND TERRITORY</h3>
 
           <p>
-            THE MATERIALS ARE PROVIDED "AS IS." LICENSOR MAKES NO WARRANTIES, EXPRESS OR IMPLIED, 
-            INCLUDING BUT NOT LIMITED TO MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. 
-            LICENSOR SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL 
-            DAMAGES ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE MATERIALS.
+            This Agreement is effective immediately upon purchase or download and remains in effect 
+            for the life of the copyright & any derivative works.
+          </p>
+          <p>
+            This license applies worldwide, for all media and distribution channels now known or 
+            hereafter developed.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">5. INDEMNIFICATION</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">7. ACCOUNTING AND VERIFICATION</h3>
 
           <p>
-            Licensee agrees to indemnify and hold harmless Sample Society, LLC, its Creators, and 
-            affiliates from any claims, damages, or liabilities arising from Licensee's misuse or 
-            unauthorized use of the Materials.
+            Niko The Great and/or the Creator(s) may request reasonable verification of earnings, 
+            credit, publishing registration, or royalty arrangements for any commercially released 
+            work using Master Use Materials. Licensee agrees to provide such verification upon request.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">6. TERMINATION</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">8. GOVERNING LAW</h3>
 
           <p>
-            This License is effective until terminated. Licensor may terminate the Agreement immediately 
-            upon written notice if Licensee breaches any term. Upon termination, Licensee must cease 
-            all use of the Materials and destroy any copies in their possession.
+            This Agreement shall be governed by and construed in accordance with the laws of the 
+            State of Illinois, without regard to its conflict-of-law provisions.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">7. GOVERNING LAW</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">9. ENTIRE AGREEMENT</h3>
 
           <p>
-            This Agreement shall be governed by and interpreted under the laws of the state of Georgia, 
-            USA. Any disputes shall be resolved in the courts located in Fulton County, Georgia.
+            This Agreement constitutes the full understanding between the parties regarding the 
+            Materials. If any provision is deemed invalid or unenforceable, the remainder shall 
+            remain in full force and effect.
           </p>
 
-          <h3 className="text-primary text-lg font-semibold mt-8 mb-4">8. ENTIRE AGREEMENT</h3>
+          <h3 className="text-primary neon-glow-sm text-lg font-semibold mt-8 mb-4">10. REFUND POLICY</h3>
 
           <p>
-            This Agreement constitutes the entire understanding between Licensor and Licensee. 
-            Any amendments or modifications must be in writing and signed by both parties.
+            Due to the digital nature of these products, all sales are final. Please listen to any 
+            available previews before purchasing. If you experience technical issues with your 
+            download, please contact us for support.
           </p>
 
-          <p className="mt-8">
-            For licensing inquiries, custom usage rights, or additional terms, please contact:
-          </p>
-
-          <p className="text-primary">nikothegreatbeatz@gmail.com</p>
+          <div className="mt-12 pt-8 border-t border-border">
+            <p className="text-primary neon-glow-sm font-bold text-lg">NIKO THE GREAT</p>
+            <p className="mt-2">Representing its affiliated creators and producers</p>
+            <p className="mt-4 text-muted-foreground italic">
+              Effective immediately upon purchase or download of product.
+            </p>
+          </div>
         </div>
       </section>
     </Layout>
