@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { fetchProductByHandle, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
-import { ArrowLeft, ShoppingCart, Plus, Play, Pause } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Plus, Play, Pause, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { AudioWaveform } from "@/components/AudioWaveform";
@@ -34,6 +34,7 @@ const ProductDetail = () => {
   const [bundleVariants, setBundleVariants] = useState<Record<string, string>>({}); // productId -> variantId
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingHandle, setPlayingHandle] = useState<string | null>(null);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const setCartOpen = useCartStore((state) => state.setOpen);
@@ -378,9 +379,19 @@ const ProductDetail = () => {
             {/* Description */}
             {product.description && (
               <div>
-                <h3 className="text-sm font-semibold text-foreground mb-1.5">Description</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                  {product.description}
+                <button 
+                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                  className="flex items-center justify-between w-full text-left group"
+                >
+                  <h3 className="text-sm font-semibold text-foreground">Description</h3>
+                  {isDescriptionExpanded ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  )}
+                </button>
+                <p className={`text-sm text-muted-foreground leading-relaxed mt-1.5 ${isDescriptionExpanded ? "" : "line-clamp-2"}`}>
+                  {product.description.replace(/Sample Society/gi, "Niko The Great")}
                 </p>
               </div>
             )}

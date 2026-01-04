@@ -19,14 +19,14 @@ const Terms = () => {
         <div className="prose prose-invert max-w-none space-y-6 text-secondary-foreground">
           <p>
             This Master Use License Agreement ("Agreement") is entered into by and between 
-            Sample Society, LLC ("Licensor"), acting on behalf of its affiliated producers, 
+            Niko The Great ("Licensor"), acting on behalf of its affiliated producers, 
             composers, and sound designers (collectively, the "Creators"), and the purchaser 
             or user ("Licensee" or "Client").
           </p>
 
           <p>
             By purchasing, downloading, or otherwise obtaining any sound recordings, compositions, 
-            or sample packs ("Materials") from Sample-Society.com, Licensee agrees to be legally 
+            or sample packs ("Materials") from this website, Licensee agrees to be legally 
             bound by the terms of this Agreement.
           </p>
 
