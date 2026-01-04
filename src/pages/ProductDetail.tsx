@@ -30,6 +30,7 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
   const [bundleItems, setBundleItems] = useState<Set<string>>(new Set());
+  const [bundleVariants, setBundleVariants] = useState<Record<string, string>>({}); // productId -> variantId
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const addItem = useCartStore((state) => state.addItem);
@@ -55,9 +56,19 @@ const ProductDetail = () => {
         ).slice(0, 3);
         setRelatedProducts(related);
         
-        // Pre-select current product in bundle
+        // Pre-select current product in bundle and set default variants
         if (data?.id) {
           setBundleItems(new Set([data.id]));
+          
+          // Initialize bundle variants with first variant for each related product
+          const initialVariants: Record<string, string> = {};
+          related.forEach((p) => {
+            const firstVariant = p.node.variants?.edges?.[0]?.node;
+            if (firstVariant) {
+              initialVariants[p.node.id] = firstVariant.id;
+            }
+          });
+          setBundleVariants(initialVariants);
         }
       } catch (error) {
         console.error("Failed to load product:", error);
@@ -139,10 +150,12 @@ const ProductDetail = () => {
       total += parseFloat(selectedVariant?.price?.amount || "0");
     }
     
-    // Add related products
+    // Add related products with their selected variants
     relatedProducts.forEach((p) => {
       if (bundleItems.has(p.node.id)) {
-        total += parseFloat(p.node.priceRange?.minVariantPrice?.amount || "0");
+        const selectedVariantId = bundleVariants[p.node.id];
+        const variant = p.node.variants?.edges?.find(v => v.node.id === selectedVariantId)?.node;
+        total += parseFloat(variant?.price?.amount || p.node.priceRange?.minVariantPrice?.amount || "0");
       }
     });
     
@@ -150,12 +163,14 @@ const ProductDetail = () => {
   };
 
   const getBundleOriginalTotal = () => {
-    return getBundleTotal(); // Could add original prices here for strikethrough
+    return getBundleTotal();
   };
 
   const getBundleDiscount = () => {
     const itemCount = bundleItems.size;
-    if (itemCount >= 3) return 0.10; // 10% off bundles of 3+
+    if (itemCount >= 4) return 0.20; // 20% off bundles of 4+
+    if (itemCount >= 3) return 0.15; // 15% off bundles of 3+
+    if (itemCount >= 2) return 0.10; // 10% off bundles of 2+
     return 0;
   };
 
@@ -180,10 +195,12 @@ const ProductDetail = () => {
       });
     }
 
-    // Add related products
+    // Add related products with their selected variants
     relatedProducts.forEach((p) => {
       if (bundleItems.has(p.node.id)) {
-        const variant = p.node.variants?.edges?.[0]?.node;
+        const selectedVariantId = bundleVariants[p.node.id];
+        const variant = p.node.variants?.edges?.find(v => v.node.id === selectedVariantId)?.node 
+          || p.node.variants?.edges?.[0]?.node;
         if (variant) {
           addItem({
             product: p,
@@ -384,6 +401,11 @@ const ProductDetail = () => {
                         </span>
                       )}
                     </p>
+                    {getBundleDiscount() > 0 && (
+                      <p className="text-xs text-primary font-medium">
+                        Save {Math.round(getBundleDiscount() * 100)}%
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -397,36 +419,76 @@ const ProductDetail = () => {
                   ADD TO CART
                 </Button>
 
-                <div className="space-y-3">
-                  {/* Current Product Checkbox */}
-                  <div className="flex items-center gap-3">
+                <div className="space-y-4">
+                  {/* Current Product */}
+                  <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border">
                     <Checkbox
                       id={`bundle-${product.id}`}
                       checked={bundleItems.has(product.id)}
                       onCheckedChange={() => toggleBundleItem(product.id)}
                       disabled
                     />
-                    <label htmlFor={`bundle-${product.id}`} className="flex-1 text-sm">
-                      <span className="font-medium">This item: </span>
-                      <span className="text-primary">{product.title}</span>
-                      <span className="ml-2 font-semibold">${price}</span>
-                    </label>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-sm">
+                          <span className="text-muted-foreground">This item: </span>
+                          <span className="text-primary">{product.title}</span>
+                        </span>
+                        <span className="font-semibold text-sm">${price}</span>
+                      </div>
+                      {product.variants?.edges && product.variants.edges.length > 1 && (
+                        <div className="flex gap-1.5">
+                          {product.variants.edges.map((variant) => (
+                            <Button
+                              key={variant.node.id}
+                              variant={selectedVariantId === variant.node.id ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setSelectedVariantId(variant.node.id)}
+                              className="h-7 text-xs px-2"
+                            >
+                              {variant.node.title}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Related Products Checkboxes */}
+                  {/* Related Products */}
                   {relatedProducts.map((p) => {
-                    const relatedPrice = parseFloat(p.node.priceRange?.minVariantPrice?.amount || "0").toFixed(2);
+                    const selectedBundleVariantId = bundleVariants[p.node.id];
+                    const selectedBundleVariant = p.node.variants?.edges?.find(v => v.node.id === selectedBundleVariantId)?.node;
+                    const relatedPrice = parseFloat(selectedBundleVariant?.price?.amount || p.node.priceRange?.minVariantPrice?.amount || "0").toFixed(2);
+                    const hasVariants = p.node.variants?.edges && p.node.variants.edges.length > 1;
+                    
                     return (
-                      <div key={p.node.id} className="flex items-center gap-3">
+                      <div key={p.node.id} className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border">
                         <Checkbox
                           id={`bundle-${p.node.id}`}
                           checked={bundleItems.has(p.node.id)}
                           onCheckedChange={() => toggleBundleItem(p.node.id)}
                         />
-                        <label htmlFor={`bundle-${p.node.id}`} className="flex-1 text-sm">
-                          <span className="text-muted-foreground">{p.node.title}</span>
-                          <span className="ml-2 font-semibold">${relatedPrice}</span>
-                        </label>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-muted-foreground text-sm">{p.node.title}</span>
+                            <span className="font-semibold text-sm">${relatedPrice}</span>
+                          </div>
+                          {hasVariants && (
+                            <div className="flex gap-1.5">
+                              {p.node.variants.edges.map((variant) => (
+                                <Button
+                                  key={variant.node.id}
+                                  variant={selectedBundleVariantId === variant.node.id ? "default" : "outline"}
+                                  size="sm"
+                                  onClick={() => setBundleVariants(prev => ({ ...prev, [p.node.id]: variant.node.id }))}
+                                  className="h-7 text-xs px-2"
+                                >
+                                  {variant.node.title}
+                                </Button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
