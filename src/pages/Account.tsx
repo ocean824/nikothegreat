@@ -209,7 +209,10 @@ const Account = () => {
                           Access your downloads
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
-                          Download links were sent to your email when your order was completed. Check your inbox for the email from our store.
+                          Open the <strong className="text-foreground">Shop app</strong> or search <strong className="text-foreground">"All Mail"</strong> in 
+                          Gmail/your email under the address you used at checkout. Look for an email 
+                          from <strong className="text-foreground">Niko The Great</strong> — your download links are there. 
+                          Also check spam/promotions folders.
                         </p>
                       </div>
                       <Button
