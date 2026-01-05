@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Instagram, ShoppingCart, Youtube, Mail, User } from "lucide-react";
+import { Instagram, ShoppingCart, Youtube, Mail, User, Menu, X } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export const Header = () => {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const items = useCartStore((state) => state.items);
   const setOpen = useCartStore((state) => state.setOpen);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -28,7 +30,7 @@ export const Header = () => {
             NIKO THE GREAT
           </Link>
 
-          {/* Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
@@ -47,38 +49,41 @@ export const Header = () => {
 
           {/* Right side icons */}
           <div className="flex items-center gap-4">
-            <a
-              href="https://www.instagram.com/1.nikothegreat/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              <Instagram className="h-5 w-5" />
-            </a>
-            <a
-              href="https://x.com/1NikoTheGreat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </a>
-            <a
-              href="https://www.youtube.com/@NikoTheGreat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              <Youtube className="h-5 w-5" />
-            </a>
-            <a
-              href="mailto:nikothegreatbeatz@gmail.com"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              <Mail className="h-5 w-5" />
-            </a>
+            {/* Social icons - hidden on mobile */}
+            <div className="hidden md:flex items-center gap-4">
+              <a
+                href="https://www.instagram.com/1.nikothegreat/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://x.com/1NikoTheGreat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.youtube.com/@NikoTheGreat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+              <a
+                href="mailto:nikothegreatbeatz@gmail.com"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                <Mail className="h-5 w-5" />
+              </a>
+            </div>
             <Link
               to="/account"
               className="text-foreground hover:text-primary transition-colors"
@@ -98,8 +103,76 @@ export const Header = () => {
                 </Badge>
               )}
             </Button>
+            
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden mt-4 pb-2 border-t border-border pt-4">
+            <div className="flex flex-col gap-3">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-sm transition-colors hover:text-primary py-2 ${
+                    location.pathname === link.to
+                      ? "text-primary"
+                      : "text-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              
+              {/* Social links in mobile menu */}
+              <div className="flex items-center gap-4 pt-3 border-t border-border mt-2">
+                <a
+                  href="https://www.instagram.com/1.nikothegreat/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://x.com/1NikoTheGreat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.youtube.com/@NikoTheGreat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  <Youtube className="h-5 w-5" />
+                </a>
+                <a
+                  href="mailto:nikothegreatbeatz@gmail.com"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  <Mail className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          </nav>
+        )}
       </div>
     </header>
   );
