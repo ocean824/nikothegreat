@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { User, LogOut, Package, Download, Loader2, Mail } from "lucide-react";
+import { User, LogOut, Package, ExternalLink, Mail, Loader2 } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface PurchaseItem {
@@ -31,7 +31,7 @@ const Account = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [downloadingItems, setDownloadingItems] = useState<Set<string>>(new Set());
+  const SHOPIFY_STORE_URL = "https://gkxpnx-ys.myshopify.com";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,63 +98,9 @@ const Account = () => {
     navigate("/");
   };
 
-  const handleDownload = async (item: PurchaseItem) => {
-    if (!item.product_handle) {
-      toast.error("Download not available", {
-        description: "Product information is missing. Please contact support.",
-      });
-      return;
-    }
-
-    setDownloadingItems(prev => new Set(prev).add(item.id));
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error("Please log in to download");
-        navigate("/auth");
-        return;
-      }
-
-      // Call edge function to trigger a free Shopify order (sends download email)
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-download`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({
-            productHandle: item.product_handle,
-            purchaseItemId: item.id,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send download');
-      }
-
-      toast.success("Download link sent!", {
-        description: `Check your email (${user?.email}) for the download link.`,
-        icon: <Mail className="w-4 h-4" />,
-      });
-
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error("Could not send download", {
-        description: error instanceof Error ? error.message : "Please try again later or contact support.",
-      });
-    } finally {
-      setDownloadingItems(prev => {
-        const next = new Set(prev);
-        next.delete(item.id);
-        return next;
-      });
-    }
+  const handleAccessDownloads = () => {
+    // Open Shopify store's account page where customers can access their orders/downloads
+    window.open(`${SHOPIFY_STORE_URL}/account`, '_blank');
   };
 
   if (isLoading) {
@@ -250,26 +196,32 @@ const Account = () => {
                             Qty: {item.quantity} × ${item.price?.toFixed(2)}
                           </p>
                         </div>
-                        <Button
-                          size="sm"
-                          onClick={() => handleDownload(item)}
-                          disabled={downloadingItems.has(item.id)}
-                          className="flex-shrink-0"
-                        >
-                          {downloadingItems.has(item.id) ? (
-                            <>
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Sending...
-                            </>
-                          ) : (
-                            <>
-                              <Download className="w-4 h-4 mr-2" />
-                              Get Download
-                            </>
-                          )}
-                        </Button>
                       </div>
                     ))}
+                  </div>
+
+                  {/* Download access info */}
+                  <div className="p-4 bg-muted/50 border-t border-border">
+                    <div className="flex items-start gap-3">
+                      <Mail className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm text-foreground font-medium">
+                          Access your downloads
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Download links were sent to your email when your order was completed. Check your inbox for the email from our store.
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={handleAccessDownloads}
+                        className="flex-shrink-0"
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        View Order
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
