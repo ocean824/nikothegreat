@@ -14,7 +14,6 @@ export const Header = () => {
 
   const navLinks = [
     { to: "/sample-kits", label: "Sample Kits" },
-    // { to: "/drum-kits", label: "Drum Kits" }, // Hidden for now
     { to: "/midi-kits", label: "MIDI Kits" },
     { to: "/terms", label: "Terms" },
     { to: "/credits", label: "Credits" },
@@ -23,41 +22,44 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="font-pixel text-primary text-lg tracking-wider neon-glow">
-            NIKO THE GREAT
-          </Link>
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between gap-4">
+          {/* Left side: Logo + Navigation */}
+          <div className="flex items-center gap-6 min-w-0">
+            {/* Logo */}
+            <Link to="/" className="font-pixel text-primary text-sm md:text-base tracking-wider neon-glow whitespace-nowrap flex-shrink-0">
+              NIKO THE GREAT
+            </Link>
 
-          {/* Desktop Navigation - visible on landscape and larger */}
-          <nav className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`text-sm transition-colors hover:text-primary ${
-                  location.pathname === link.to
-                    ? "text-primary"
-                    : "text-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-4 lg:gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`text-sm whitespace-nowrap transition-colors hover:text-primary ${
+                    location.pathname === link.to
+                      ? "text-primary"
+                      : "text-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-          {/* Right side icons */}
-          <div className="flex items-center gap-4">
-            {/* Social icons - visible on landscape and larger */}
-            <div className="hidden md:flex items-center gap-4">
+          {/* Right side: Social + Account + Cart */}
+          <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
+            {/* Social icons - visible on md and up */}
+            <div className="hidden md:flex items-center gap-3 lg:gap-4">
               <a
                 href="https://www.instagram.com/1.nikothegreat/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-primary transition-colors"
               >
-                <Instagram className="h-5 w-5" />
+                <Instagram className="h-4 w-4 lg:h-5 lg:w-5" />
               </a>
               <a
                 href="https://x.com/1NikoTheGreat"
@@ -65,7 +67,7 @@ export const Header = () => {
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-primary transition-colors"
               >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 lg:h-5 lg:w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
@@ -75,15 +77,16 @@ export const Header = () => {
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-primary transition-colors"
               >
-                <Youtube className="h-5 w-5" />
+                <Youtube className="h-4 w-4 lg:h-5 lg:w-5" />
               </a>
               <a
                 href="mailto:nikothegreatbeatz@gmail.com"
                 className="text-foreground hover:text-primary transition-colors"
               >
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4 lg:h-5 lg:w-5" />
               </a>
             </div>
+            
             <Link
               to="/account"
               className="text-foreground hover:text-primary transition-colors"
@@ -93,12 +96,12 @@ export const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="relative"
+              className="relative h-9 w-9"
               onClick={() => setOpen(true)}
             >
               <ShoppingCart className="h-5 w-5" />
               {totalItems > 0 && (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
                   {totalItems}
                 </Badge>
               )}
@@ -108,7 +111,7 @@ export const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="md:hidden h-9 w-9"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
