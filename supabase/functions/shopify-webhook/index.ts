@@ -5,21 +5,23 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-shopify-topic, x-shopify-hmac-sha256, x-shopify-shop-domain',
 }
 
-// Download URL mapping for products (product handle -> download URL)
-const downloadUrlMap: Record<string, string> = {
-  'abstract-minds-vol-1': '/downloads/abstract-minds-vol-1.zip',
-  'black-friday-vol-1': '/downloads/black-friday-vol-1.zip',
-  'the-feels-vol-1': '/downloads/the-feels-vol-1.zip',
-  'gray-area-vol-1': '/downloads/gray-area-vol-1.zip',
-  'haze-midi-phrases-vol-1': '/downloads/haze-midi-phrases-vol-1.zip',
-  'mana-vol-1': '/downloads/mana-vol-1.zip',
-  'stained-glass-vol-1': '/downloads/stained-glass-vol-1.zip',
-  'stained-glass-vol-2': '/downloads/stained-glass-vol-2.zip',
-  'unrequited-love-vol-1': '/downloads/unrequited-love-vol-1.zip',
-  'unrequited-love-vol-2': '/downloads/unrequited-love-vol-2.zip',
-  'vibrant-darkness-vol-1': '/downloads/vibrant-darkness-vol-1.zip',
-  'vintage-vibes-vol-1': '/downloads/vintage-vibes-vol-1.zip',
-}
+// Product handle to storage path mapping
+// Files should be uploaded to the 'downloads' bucket with this structure:
+// downloads/{product-handle}/{filename}.zip
+const productHandles = [
+  'abstract-minds-vol-1',
+  'black-friday-vol-1',
+  'the-feels-vol-1',
+  'gray-area-vol-1',
+  'haze-midi-phrases-vol-1',
+  'mana-vol-1',
+  'stained-glass-vol-1',
+  'stained-glass-vol-2',
+  'unrequited-love-vol-1',
+  'unrequited-love-vol-2',
+  'vibrant-darkness-vol-1',
+  'vintage-vibes-vol-1',
+]
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -62,7 +64,7 @@ Deno.serve(async (req) => {
       .from('purchases')
       .select('id')
       .eq('shopify_order_id', orderData.id.toString())
-      .single()
+      .maybeSingle()
 
     if (existingOrder) {
       console.log('Order already exists, skipping:', orderData.id)
@@ -100,19 +102,26 @@ Deno.serve(async (req) => {
     // Insert purchase items
     const lineItems = orderData.line_items || []
     for (const item of lineItems) {
-      const productHandle = item.product_id ? item.handle || item.sku?.toLowerCase().replace(/\s+/g, '-') : null
+      // Try to get handle from the item, or derive from title
+      let productHandle = item.handle || null
       
-      // Try to find download URL from the handle
-      let downloadUrl = null
-      if (productHandle && downloadUrlMap[productHandle]) {
-        downloadUrl = downloadUrlMap[productHandle]
-      } else {
-        // Try to match by title
+      if (!productHandle && item.title) {
+        // Try to match by title to known handles
         const titleHandle = item.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-        if (titleHandle && downloadUrlMap[titleHandle]) {
-          downloadUrl = downloadUrlMap[titleHandle]
+        if (productHandles.includes(titleHandle)) {
+          productHandle = titleHandle
+        } else {
+          // Try partial matching
+          const matchedHandle = productHandles.find(h => 
+            titleHandle.includes(h) || h.includes(titleHandle)
+          )
+          if (matchedHandle) {
+            productHandle = matchedHandle
+          }
         }
       }
+
+      console.log(`Processing item: ${item.title}, handle: ${productHandle}`)
 
       const { error: itemError } = await supabase
         .from('purchase_items')
@@ -123,7 +132,8 @@ Deno.serve(async (req) => {
           variant_title: item.variant_title || null,
           quantity: item.quantity || 1,
           price: parseFloat(item.price || '0'),
-          download_url: downloadUrl,
+          // download_url will be generated dynamically via signed URLs
+          download_url: null,
         })
 
       if (itemError) {

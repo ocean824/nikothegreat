@@ -2,3 +2,6 @@ project_id = "telhbdbufgnmrurgkzww"
 
 [functions.shopify-webhook]
 verify_jwt = false
+
+[functions.get-download-url]
+verify_jwt = false
