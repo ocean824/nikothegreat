@@ -9,6 +9,7 @@ import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { FloatingParticles } from "@/components/effects/FloatingParticles";
 import { FilmGrain } from "@/components/effects/FilmGrain";
 import { VignetteOverlay } from "@/components/effects/VignetteOverlay";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 interface LayoutProps {
   children: ReactNode;
@@ -30,6 +31,7 @@ export const Layout = ({ children, showMarquee = true, hideNewsletter = false }:
       <WelcomePopup />
       <AbandonedCartPopup />
       <ExitIntentPopup />
+      <BackToTop />
     </div>
   );
 };
