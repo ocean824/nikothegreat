@@ -31,6 +31,7 @@ const Account = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [downloadingItems, setDownloadingItems] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,17 +99,64 @@ const Account = () => {
     navigate("/");
   };
 
-  const handleDownload = (downloadUrl: string | null, productTitle: string) => {
-    if (!downloadUrl) {
-      toast.error("Download not available yet", {
-        description: "Please contact support if you need assistance.",
+  const handleDownload = async (item: PurchaseItem) => {
+    if (!item.product_handle) {
+      toast.error("Download not available", {
+        description: "Product information is missing. Please contact support.",
       });
       return;
     }
-    
-    // Open download in new tab
-    window.open(downloadUrl, '_blank');
-    toast.success(`Starting download: ${productTitle}`);
+
+    // Set loading state for this item
+    setDownloadingItems(prev => new Set(prev).add(item.id));
+
+    try {
+      // Get the current session for auth
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please log in to download");
+        navigate("/auth");
+        return;
+      }
+
+      // Call the edge function to get a signed download URL
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-download-url`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            productHandle: item.product_handle,
+            purchaseItemId: item.id,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get download URL');
+      }
+
+      // Open the signed URL in a new tab to trigger download
+      window.open(data.downloadUrl, '_blank');
+      toast.success(`Starting download: ${item.product_title}`);
+
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error("Download not available yet", {
+        description: error instanceof Error ? error.message : "Please try again later or contact support.",
+      });
+    } finally {
+      setDownloadingItems(prev => {
+        const next = new Set(prev);
+        next.delete(item.id);
+        return next;
+      });
+    }
   };
 
   if (isLoading) {
@@ -206,11 +254,21 @@ const Account = () => {
                         </div>
                         <Button
                           size="sm"
-                          onClick={() => handleDownload(item.download_url, item.product_title)}
+                          onClick={() => handleDownload(item)}
+                          disabled={downloadingItems.has(item.id)}
                           className="flex-shrink-0"
                         >
-                          <Download className="w-4 h-4 mr-2" />
-                          Download
+                          {downloadingItems.has(item.id) ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Loading...
+                            </>
+                          ) : (
+                            <>
+                              <Download className="w-4 h-4 mr-2" />
+                              Download
+                            </>
+                          )}
                         </Button>
                       </div>
                     ))}
