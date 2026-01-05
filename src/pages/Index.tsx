@@ -38,10 +38,10 @@ const Index = () => {
       <section className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            <span className="text-primary neon-glow">Sample Kits</span>,{" "}
-            <span className="text-primary neon-glow">Midi Kits</span>,{" "}
-            <span className="text-primary neon-glow">Loops</span>, &{" "}
-            <span className="text-primary neon-glow">Compositions</span>
+            <span className="text-primary hero-glow-pulse">Sample Kits</span>,{" "}
+            <span className="text-primary hero-glow-pulse">Midi Kits</span>,{" "}
+            <span className="text-primary hero-glow-pulse">Loops</span>, &{" "}
+            <span className="text-primary hero-glow-pulse">Compositions</span>
           </h1>
           <p className="text-muted-foreground text-lg">
             All original, handcrafted by Niko The Great for your next hit!

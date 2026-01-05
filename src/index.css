@@ -277,7 +277,7 @@
     background: hsl(142 71% 45% / 0.5);
   }
 
-  /* Ambient light leak effect */
+  /* Ambient light leak effect - spaced out beams */
   .light-leak {
     position: relative;
     overflow: hidden;
@@ -287,18 +287,16 @@
     content: '';
     position: absolute;
     top: 0;
-    left: -60%;
-    width: 60%;
+    left: -40%;
+    width: 40%;
     height: 100%;
     background: linear-gradient(
       90deg,
       transparent,
-      hsl(142 71% 45% / 0.04),
-      hsl(142 71% 45% / 0.06),
-      hsl(142 71% 45% / 0.04),
+      hsl(142 71% 45% / 0.025),
       transparent
     );
-    animation: lightLeak 6s ease-in-out infinite;
+    animation: lightLeak 12s ease-in-out infinite;
     pointer-events: none;
   }
 
@@ -306,53 +304,70 @@
     content: '';
     position: absolute;
     top: 0;
-    right: -60%;
-    width: 60%;
+    right: -40%;
+    width: 40%;
     height: 100%;
     background: linear-gradient(
       270deg,
       transparent,
-      hsl(142 71% 45% / 0.03),
-      hsl(142 71% 45% / 0.05),
-      hsl(142 71% 45% / 0.03),
+      hsl(142 71% 45% / 0.02),
       transparent
     );
-    animation: lightLeakReverse 9s ease-in-out infinite;
-    animation-delay: 3s;
+    animation: lightLeakReverse 15s ease-in-out infinite;
+    animation-delay: 8s;
     pointer-events: none;
   }
 
   @keyframes lightLeak {
-    0% {
-      left: -60%;
+    0%, 100% {
+      left: -40%;
       opacity: 0;
     }
-    10% {
+    5% {
       opacity: 1;
     }
-    90% {
+    95% {
       opacity: 1;
     }
-    100% {
-      left: 160%;
-      opacity: 0;
+    50% {
+      left: 140%;
     }
   }
 
   @keyframes lightLeakReverse {
-    0% {
-      right: -60%;
+    0%, 100% {
+      right: -40%;
       opacity: 0;
     }
-    10% {
+    5% {
       opacity: 1;
     }
-    90% {
+    95% {
       opacity: 1;
     }
-    100% {
-      right: 160%;
-      opacity: 0;
+    50% {
+      right: 140%;
+    }
+  }
+
+  /* Hero glow pulse */
+  .hero-glow-pulse {
+    animation: heroGlowPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes heroGlowPulse {
+    0%, 100% {
+      text-shadow: 
+        0 0 4px hsl(142 71% 45% / 0.8),
+        0 0 10px hsl(142 71% 45% / 0.5),
+        0 0 20px hsl(142 71% 45% / 0.3);
+    }
+    50% {
+      text-shadow: 
+        0 0 6px hsl(142 71% 45% / 1),
+        0 0 15px hsl(142 71% 45% / 0.7),
+        0 0 30px hsl(142 71% 45% / 0.5),
+        0 0 45px hsl(142 71% 45% / 0.3);
     }
   }
 }
