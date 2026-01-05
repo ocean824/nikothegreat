@@ -10,15 +10,16 @@ import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 interface LayoutProps {
   children: ReactNode;
   showMarquee?: boolean;
+  hideNewsletter?: boolean;
 }
 
-export const Layout = ({ children, showMarquee = true }: LayoutProps) => {
+export const Layout = ({ children, showMarquee = true, hideNewsletter = false }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {showMarquee && <PromoMarquee />}
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <Footer hideNewsletter={hideNewsletter} />
       <CartDrawer />
       <WelcomePopup />
       <AbandonedCartPopup />
