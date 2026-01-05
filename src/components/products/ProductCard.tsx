@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { ShopifyProduct } from "@/lib/shopify";
-import { OptimizedImage } from "@/components/ui/OptimizedImage";
+import { useState, memo } from "react";
 
 interface ProductCardProps {
   product: ShopifyProduct;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCardComponent = ({ product }: ProductCardProps) => {
   const { node } = product;
+  const [imageLoaded, setImageLoaded] = useState(false);
   const imageUrl = node.images?.edges?.[0]?.node?.url;
   const price = parseFloat(node.priceRange.minVariantPrice.amount).toFixed(2);
   const originalPrice = (parseFloat(node.priceRange.minVariantPrice.amount) + 5).toFixed(2);
@@ -19,14 +20,26 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       className="product-card group block bg-card rounded-lg overflow-hidden border border-border hover:border-primary/50 hover:neon-border-glow transition-all duration-300"
     >
       <div className="aspect-square relative overflow-hidden bg-muted">
-        {imageUrl ? (
-          <OptimizedImage
-            src={imageUrl}
-            alt={node.title}
-            className="product-image w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
-            placeholderClassName="w-full h-full"
-          />
-        ) : (
+        {imageUrl && (
+          <>
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-muted to-primary/10">
+                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-primary/5 to-transparent" />
+              </div>
+            )}
+            <img
+              src={imageUrl}
+              alt={node.title}
+              loading="eager"
+              decoding="async"
+              onLoad={() => setImageLoaded(true)}
+              className={`product-image w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </>
+        )}
+        {!imageUrl && (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
             No Image
           </div>
@@ -53,3 +66,5 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     </Link>
   );
 };
+
+export const ProductCard = memo(ProductCardComponent);
