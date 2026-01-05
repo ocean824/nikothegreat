@@ -30,8 +30,8 @@ export const Header = () => {
             NIKO THE GREAT
           </Link>
 
-          {/* Desktop Navigation - hidden on landscape mobile too */}
-          <nav className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
+          {/* Desktop Navigation - visible on landscape and larger */}
+          <nav className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -49,8 +49,8 @@ export const Header = () => {
 
           {/* Right side icons */}
           <div className="flex items-center gap-4">
-            {/* Social icons - hidden on mobile/landscape */}
-            <div className="hidden lg:flex items-center gap-4">
+            {/* Social icons - visible on landscape and larger */}
+            <div className="hidden md:flex items-center gap-4">
               <a
                 href="https://www.instagram.com/1.nikothegreat/"
                 target="_blank"
@@ -104,11 +104,11 @@ export const Header = () => {
               )}
             </Button>
             
-            {/* Mobile menu button - show on landscape too */}
+            {/* Mobile menu button - portrait only */}
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -116,9 +116,9 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation - show on landscape too */}
+        {/* Mobile Navigation - portrait only */}
         {mobileMenuOpen && (
-          <nav className="lg:hidden mt-4 pb-2 border-t border-border pt-4">
+          <nav className="md:hidden mt-4 pb-2 border-t border-border pt-4">
             <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
