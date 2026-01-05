@@ -159,6 +159,36 @@
       0 0 10px hsl(142 71% 45% / 0.3);
   }
 
+  /* Enhanced glow for important elements */
+  .neon-glow-intense {
+    text-shadow: 
+      0 0 5px hsl(142 71% 45% / 1),
+      0 0 15px hsl(142 71% 45% / 0.8),
+      0 0 30px hsl(142 71% 45% / 0.6),
+      0 0 50px hsl(142 71% 45% / 0.4);
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  .neon-box-glow-intense {
+    box-shadow: 
+      0 0 10px hsl(142 71% 45% / 0.6),
+      0 0 20px hsl(142 71% 45% / 0.4),
+      0 0 40px hsl(142 71% 45% / 0.2),
+      0 0 60px hsl(142 71% 45% / 0.1);
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(142 71% 45% / 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
   /* Marquee animation */
   @keyframes marquee {
     0% {
@@ -166,6 +196,15 @@
     }
     100% {
       transform: translateX(-50%);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.1);
     }
   }
 
@@ -179,11 +218,27 @@
   }
 
   .product-card:hover {
-    @apply transform -translate-y-1;
+    @apply transform -translate-y-2;
+    box-shadow: 
+      0 10px 40px hsl(0 0% 0% / 0.4),
+      0 0 20px hsl(142 71% 45% / 0.15);
   }
 
   .product-card:hover .product-image {
-    @apply opacity-80;
+    @apply opacity-90;
+    filter: brightness(1.05);
+  }
+
+  /* Button glow on hover */
+  .btn-glow:hover {
+    box-shadow: 
+      0 0 20px hsl(142 71% 45% / 0.5),
+      0 0 40px hsl(142 71% 45% / 0.3);
+  }
+
+  /* Vintage color grading */
+  .vintage-filter {
+    filter: sepia(0.05) saturate(1.1) contrast(1.05);
   }
 
   /* Scrollbar styling */
@@ -203,5 +258,36 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(142 71% 45% / 0.5);
+  }
+
+  /* Ambient light leak effect */
+  .light-leak {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .light-leak::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(142 71% 45% / 0.03),
+      transparent
+    );
+    animation: lightLeak 8s ease-in-out infinite;
+  }
+
+  @keyframes lightLeak {
+    0% {
+      left: -50%;
+    }
+    100% {
+      left: 150%;
+    }
   }
 }
