@@ -37,13 +37,20 @@ export const Header = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`text-sm whitespace-nowrap transition-colors hover:text-primary ${
+                  className={`text-sm whitespace-nowrap transition-colors hover:text-primary relative group ${
                     location.pathname === link.to
                       ? "text-primary"
                       : "text-foreground"
                   }`}
                 >
                   {link.label}
+                  <span 
+                    className={`absolute -bottom-0.5 left-0 h-[2px] bg-primary transition-all duration-300 ${
+                      location.pathname === link.to 
+                        ? "w-full" 
+                        : "w-0 group-hover:w-full"
+                    }`} 
+                  />
                 </Link>
               ))}
             </nav>
