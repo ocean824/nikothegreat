@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { User, LogOut, Package, Download, Loader2 } from "lucide-react";
+import { User, LogOut, Package, Download, Loader2, Mail } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface PurchaseItem {
@@ -47,7 +47,6 @@ const Account = () => {
       if (!session?.user) {
         navigate("/auth");
       } else {
-        // Defer data fetching
         setTimeout(() => {
           fetchPurchases();
         }, 0);
@@ -107,11 +106,9 @@ const Account = () => {
       return;
     }
 
-    // Set loading state for this item
     setDownloadingItems(prev => new Set(prev).add(item.id));
 
     try {
-      // Get the current session for auth
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         toast.error("Please log in to download");
@@ -119,9 +116,9 @@ const Account = () => {
         return;
       }
 
-      // Call the edge function to get a signed download URL
+      // Call edge function to trigger a free Shopify order (sends download email)
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-download-url`,
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-download`,
         {
           method: 'POST',
           headers: {
@@ -138,16 +135,17 @@ const Account = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to get download URL');
+        throw new Error(data.error || 'Failed to send download');
       }
 
-      // Open the signed URL in a new tab to trigger download
-      window.open(data.downloadUrl, '_blank');
-      toast.success(`Starting download: ${item.product_title}`);
+      toast.success("Download link sent!", {
+        description: `Check your email (${user?.email}) for the download link.`,
+        icon: <Mail className="w-4 h-4" />,
+      });
 
     } catch (error) {
       console.error('Download error:', error);
-      toast.error("Download not available yet", {
+      toast.error("Could not send download", {
         description: error instanceof Error ? error.message : "Please try again later or contact support.",
       });
     } finally {
@@ -261,12 +259,12 @@ const Account = () => {
                           {downloadingItems.has(item.id) ? (
                             <>
                               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Loading...
+                              Sending...
                             </>
                           ) : (
                             <>
                               <Download className="w-4 h-4 mr-2" />
-                              Download
+                              Get Download
                             </>
                           )}
                         </Button>
