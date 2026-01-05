@@ -4,7 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-export const Footer = () => {
+interface FooterProps {
+  hideNewsletter?: boolean;
+}
+
+export const Footer = ({ hideNewsletter = false }: FooterProps) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
@@ -23,29 +27,31 @@ export const Footer = () => {
     <footer className="border-t border-border bg-background mt-auto">
       <div className="container mx-auto px-4 py-12">
         {/* Newsletter Section */}
-        <div className="max-w-md mx-auto text-center mb-10">
-          <h3 className="font-semibold text-foreground mb-2">Stay Updated</h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            Get notified about new releases, sample packs, and exclusive content.
-          </p>
-          <form onSubmit={handleSubscribe} className="space-y-3">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              type="tel"
-              placeholder="Phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-            <Button type="submit" className="w-full neon-glow-sm">
-              Subscribe
-            </Button>
-          </form>
-        </div>
+        {!hideNewsletter && (
+          <div className="max-w-md mx-auto text-center mb-10">
+            <h3 className="font-semibold text-foreground mb-2">Stay Updated</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              Get notified about new releases, sample packs, and exclusive content.
+            </p>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                type="tel"
+                placeholder="Phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <Button type="submit" className="w-full neon-glow-sm">
+                Subscribe
+              </Button>
+            </form>
+          </div>
+        )}
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
           {/* Logo */}
