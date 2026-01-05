@@ -36,6 +36,25 @@ const ProductSkeleton = memo(() => (
 
 ProductSkeleton.displayName = "ProductSkeleton";
 
+interface AnimatedProductCardProps {
+  product: ShopifyProduct;
+  index: number;
+}
+
+const AnimatedProductCard = memo(({ product, index }: AnimatedProductCardProps) => (
+  <div 
+    className="animate-fade-in opacity-0"
+    style={{ 
+      animationDelay: `${index * 50}ms`,
+      animationFillMode: 'forwards'
+    }}
+  >
+    <ProductCard product={product} />
+  </div>
+));
+
+AnimatedProductCard.displayName = "AnimatedProductCard";
+
 export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
   if (isLoading) {
     return (
@@ -60,8 +79,12 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-      {products.map((product) => (
-        <ProductCard key={product.node.id} product={product} />
+      {products.map((product, index) => (
+        <AnimatedProductCard 
+          key={product.node.id} 
+          product={product} 
+          index={index}
+        />
       ))}
     </div>
   );
