@@ -114,9 +114,17 @@ const Account = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[400px]">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center animate-pulse">
+                <User className="w-8 h-8 text-primary" />
+              </div>
+              <div className="text-center">
+                <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto mb-2" />
+                <p className="text-muted-foreground text-sm">Loading your purchases...</p>
+              </div>
+            </div>
           </div>
         </div>
       </Layout>
