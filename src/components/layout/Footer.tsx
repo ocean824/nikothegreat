@@ -55,7 +55,7 @@ export const Footer = ({ hideNewsletter = false }: FooterProps) => {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
           {/* Logo */}
-          <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow-sm">
+          <div className="font-pixel text-primary text-sm tracking-[0.3em] neon-glow">
             NIKO THE GREAT
           </div>
 

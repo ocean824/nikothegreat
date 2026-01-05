@@ -366,7 +366,7 @@ const ProductDetail = () => {
               </h1>
               <div className="flex items-center gap-3">
                 <span className="text-sm font-bold text-red-500 uppercase">Sale</span>
-                <p className="text-2xl font-bold text-primary neon-glow-sm">${price}</p>
+                <p className="text-2xl font-bold text-primary neon-glow">${price}</p>
                 <p className="text-lg text-muted-foreground line-through">${originalPrice}</p>
               </div>
             </div>

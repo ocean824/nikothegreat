@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ShopifyProduct } from "@/lib/shopify";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -19,10 +20,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     >
       <div className="aspect-square relative overflow-hidden bg-muted">
         {imageUrl ? (
-          <img
+          <OptimizedImage
             src={imageUrl}
             alt={node.title}
-            className="product-image w-full h-full object-cover transition-opacity duration-300"
+            className="product-image w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
+            placeholderClassName="w-full h-full"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">

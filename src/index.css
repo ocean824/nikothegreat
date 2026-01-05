@@ -131,32 +131,49 @@
     border-color: hsl(var(--primary));
   }
 
-  /* Neon glow effects */
+  /* Neon glow effects - unified intensity */
   .neon-glow {
     text-shadow: 
-      0 0 5px hsl(142 71% 45% / 0.8),
-      0 0 10px hsl(142 71% 45% / 0.6),
-      0 0 20px hsl(142 71% 45% / 0.4),
-      0 0 40px hsl(142 71% 45% / 0.2);
+      0 0 4px hsl(142 71% 45% / 0.8),
+      0 0 10px hsl(142 71% 45% / 0.5),
+      0 0 20px hsl(142 71% 45% / 0.3),
+      0 0 35px hsl(142 71% 45% / 0.15);
   }
 
   .neon-glow-sm {
     text-shadow: 
-      0 0 4px hsl(142 71% 45% / 0.6),
-      0 0 8px hsl(142 71% 45% / 0.4);
+      0 0 4px hsl(142 71% 45% / 0.7),
+      0 0 10px hsl(142 71% 45% / 0.4),
+      0 0 20px hsl(142 71% 45% / 0.2);
+  }
+
+  .neon-glow-intense {
+    text-shadow: 
+      0 0 4px hsl(142 71% 45% / 0.9),
+      0 0 12px hsl(142 71% 45% / 0.6),
+      0 0 25px hsl(142 71% 45% / 0.4),
+      0 0 45px hsl(142 71% 45% / 0.2);
   }
 
   .neon-box-glow {
     box-shadow: 
-      0 0 5px hsl(142 71% 45% / 0.5),
-      0 0 10px hsl(142 71% 45% / 0.3),
-      0 0 20px hsl(142 71% 45% / 0.2);
+      0 0 5px hsl(142 71% 45% / 0.4),
+      0 0 12px hsl(142 71% 45% / 0.25),
+      0 0 25px hsl(142 71% 45% / 0.15);
   }
 
   .neon-border-glow {
     box-shadow: 
-      inset 0 0 5px hsl(142 71% 45% / 0.3),
-      0 0 10px hsl(142 71% 45% / 0.3);
+      inset 0 0 4px hsl(142 71% 45% / 0.25),
+      0 0 12px hsl(142 71% 45% / 0.25);
+  }
+
+  .neon-box-glow-intense {
+    box-shadow: 
+      0 0 8px hsl(142 71% 45% / 0.5),
+      0 0 18px hsl(142 71% 45% / 0.35),
+      0 0 35px hsl(142 71% 45% / 0.2),
+      0 0 50px hsl(142 71% 45% / 0.1);
   }
 
   /* Enhanced glow for important elements */
