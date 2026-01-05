@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, memo } from "react";
+import { useState, useRef, useEffect, forwardRef, memo } from "react";
 
 interface OptimizedImageProps {
   src: string;
@@ -7,17 +7,21 @@ interface OptimizedImageProps {
   placeholderClassName?: string;
 }
 
-const OptimizedImageComponent = ({ 
+const OptimizedImageComponent = forwardRef<HTMLDivElement, OptimizedImageProps>(({ 
   src, 
   alt, 
   className = "", 
   placeholderClassName = "" 
-}: OptimizedImageProps) => {
+}, ref) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const imgRef = useRef<HTMLDivElement>(null);
+  const internalRef = useRef<HTMLDivElement>(null);
+  const containerRef = (ref as React.RefObject<HTMLDivElement>) || internalRef;
 
   useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -31,23 +35,17 @@ const OptimizedImageComponent = ({
       }
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
+    observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [containerRef]);
 
   return (
-    <div ref={imgRef} className={`relative overflow-hidden ${placeholderClassName}`}>
+    <div ref={containerRef} className={`relative overflow-hidden ${placeholderClassName}`}>
       {/* Blur placeholder */}
       <div 
         className={`absolute inset-0 bg-gradient-to-br from-primary/5 via-muted to-primary/10 transition-opacity duration-500 ${
           isLoaded ? "opacity-0" : "opacity-100"
         }`}
-        style={{
-          backdropFilter: "blur(20px)",
-        }}
       >
         <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-primary/5 to-transparent" />
       </div>
@@ -65,6 +63,8 @@ const OptimizedImageComponent = ({
       )}
     </div>
   );
-};
+});
+
+OptimizedImageComponent.displayName = "OptimizedImage";
 
 export const OptimizedImage = memo(OptimizedImageComponent);

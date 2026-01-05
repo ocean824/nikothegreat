@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { X, Sparkles } from "lucide-react";
 
-export const WelcomePopup = () => {
+export const WelcomePopup = memo(() => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -133,4 +133,6 @@ export const WelcomePopup = () => {
       </DialogContent>
     </Dialog>
   );
-};
+});
+
+WelcomePopup.displayName = "WelcomePopup";
