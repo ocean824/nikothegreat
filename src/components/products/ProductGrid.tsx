@@ -43,10 +43,9 @@ interface AnimatedProductCardProps {
 
 const AnimatedProductCard = memo(({ product, index }: AnimatedProductCardProps) => (
   <div 
-    className="animate-fade-in opacity-0"
+    className="animate-fade-in"
     style={{ 
       animationDelay: `${index * 50}ms`,
-      animationFillMode: 'forwards'
     }}
   >
     <ProductCard product={product} />
